@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Demo User - GharBazaar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #1B9E4B 0%, #147638 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo h1 {
+            color: #1B9E4B;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .logo p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .card h3 {
+            color: #333;
+            font-size: 16px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        
+        .label {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .value {
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: #1B9E4B;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 15px;
+        }
+        
+        .btn:hover {
+            background: #147638;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(27, 158, 75, 0.3);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background: #e5e7eb;
+            box-shadow: none;
+        }
+        
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .alert.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #6ee7b7;
+        }
+        
+        .alert.info {
+            background: #dbeafe;
+            color: #1e3a8a;
+            border: 1px solid #93c5fd;
+        }
+        
+        .alert.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .emoji {
+            font-size: 20px;
+        }
+        
+        .instructions {
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .instructions h4 {
+            color: #c2410c;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .instructions ol {
+            margin-left: 20px;
+            color: #9a3412;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <h1>🏠 GharBazaar</h1>
+            <p>Demo User Setup</p>
+        </div>
+        
+        <div class="alert info" id="infoAlert">
+            <strong>ℹ️ Info:</strong> This will create a demo user in your browser's localStorage for testing purposes.
+        </div>
+        
+        <div class="alert success" id="successAlert">
+            <strong>✅ Success!</strong> Demo user created successfully! Redirecting to homepage...
+        </div>
+        
+        <div class="card">
+            <h3><span class="emoji">👤</span> Demo User Details</h3>
+            <div class="info-row">
+                <span class="label">Name:</span>
+                <span class="value">Vishu Panwar</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Email:</span>
+                <span class="value">demo@gharbazaar.in</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Phone:</span>
+                <span class="value">+91 8171864219</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Role:</span>
+                <span class="value">Client</span>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h4>📝 Instructions:</h4>
+            <ol>
+                <li>Click the "Create Demo User" button below</li>
+                <li>You will be automatically redirected to the homepage</li>
+                <li>You can now browse properties and test booking features</li>
+                <li>To logout, clear your browser's localStorage</li>
+            </ol>
+        </div>
+        
+        <button class="btn" onclick="createDemoUser()">
+            🚀 Create Demo User & Start
+        </button>
+        
+        <button class="btn btn-secondary" onclick="clearUser()">
+            🗑️ Clear User Data
+        </button>
+    </div>
+
+    <script>
+        // Show info alert on load
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('infoAlert').classList.add('show');
+        });
+
+        function createDemoUser() {
+            const demoUser = {
+                id: "demo123456",
+                _id: "demo123456",
+                name: "Vishu Panwar",
+                email: "demo@gharbazaar.in",
+                phone: "8171864219",
+                phoneNumber: "8171864219",
+                role: "client",
+                isVerified: true,
+                fcmToken: null
+            };
+
+            // Set demo user in localStorage
+            localStorage.setItem("user", JSON.stringify(demoUser));
+            localStorage.setItem("token", "demo-token-12345");
+
+            // Show success message
+            document.getElementById('infoAlert').classList.remove('show');
+            document.getElementById('successAlert').classList.add('show');
+
+            // Log to console
+            console.log("✅ Demo user created successfully!");
+            console.log("User details:", demoUser);
+
+            // Redirect to homepage after 2 seconds
+            setTimeout(function() {
+                window.location.href = 'http://localhost:5173/';
+            }, 2000);
+        }
+
+        function clearUser() {
+            localStorage.removeItem("user");
+            localStorage.removeItem("token");
+            alert("✅ User data cleared! You can now create a new demo user.");
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+import{n as e,t}from"./rtk-query-react.modern-jxfClD-6.js";var n=t({reducerPath:`getAdvertisement`,baseQuery:e({baseUrl:`http://localhost:3000/gharbazzar`}),endpoints:e=>({getAdvertisement:e.query({query:()=>`/getAdvertisement`})})}),{useGetAdvertisementQuery:r}=n;export{r as n,n as t};
