@@ -22,6 +22,7 @@ const ScrollToTop = lazy(() => import("./components/common/ScrollToTop"));
 /* ───────── MAIN PAGES ───────── */
 const Home                   = lazy(() => import("./pages/Home/Home"));
 const Services               = lazy(() => import("./pages/Services"));
+const Services2              = lazy(() => import("./pages/Services2"));
 const Marketplace            = lazy(() => import("./pages/Marketplace"));
 const Pricing                = lazy(() => import("./pages/pricing/Pricing"));
 const Contact                = lazy(() => import("./pages/contact/Contact"));
@@ -193,6 +194,7 @@ export default function AppContent() {
           <Route path="/booking-confirmation/:id" element={<BookingConfirmation />} />
           <Route path="/favorites"               element={<Favorites />} />
           <Route path="/services"                element={<Services />} />
+          <Route path="/services2"               element={<Services2 />} />
           <Route path="/marketplace"             element={<Marketplace />} />
           <Route path="/pricing"                 element={<Pricing />} />
           <Route path="/contact"                 element={<Contact />} />

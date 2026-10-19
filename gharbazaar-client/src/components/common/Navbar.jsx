@@ -25,6 +25,7 @@ const NAV_LINKS = [
       { label: "For Investors", path: "/services?type=investor", icon: DollarSign },
     ]
   },
+  { label: "Service 2.0",  path: "/services2",  icon: Briefcase },
   { label: "Marketplace",  path: "/marketplace",icon: ShoppingBag },
   { label: "Pricing",      path: "/pricing",    icon: DollarSign },
   { label: "Refer & Earn", path: "/refer",      icon: Gift },
