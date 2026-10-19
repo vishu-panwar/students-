@@ -5,8 +5,25 @@ const app = express();
 const PORT = 5000;
 
 // Middleware
+const allowedOrigins = [
+  'http://localhost:5173',           // Local development
+  'https://gharbazaar.in',           // Production domain
+  'https://www.gharbazaar.in',       // Production with www
+  'https://gharbazaarprivatelimited-main.vercel.app', // Vercel deployment
+  process.env.FRONTEND_URL           // Dynamic frontend URL from env
+].filter(Boolean); // Remove undefined values
+
 app.use(cors({
-  origin: 'http://localhost:5173', // Vite dev server
+  origin: function (origin, callback) {
+    // Allow requests with no origin (mobile apps, Postman, curl, etc.)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'The CORS policy for this site does not allow access from the specified origin: ' + origin;
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
   credentials: true
 }));
 app.use(express.json());
