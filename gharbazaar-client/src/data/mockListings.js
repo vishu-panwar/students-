@@ -1,4 +1,5 @@
 // Mock data for seller listings - No backend needed!
+// Updated: Fixed Vercel deployment path resolution
 export const mockSellerListings = [
   {
     _id: "demo-user-001",
