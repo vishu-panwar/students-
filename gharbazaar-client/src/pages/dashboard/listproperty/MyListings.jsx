@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+// import axios from "axios"; // Not needed - using mock data
 import {
   Building2,
   MapPin,
@@ -25,6 +25,11 @@ import {
   Zap,
   HelpCircle,
 } from "lucide-react";
+import { 
+  filterMockListings, 
+  updateMockListingStatus, 
+  deleteMockListing 
+} from "../../data/mockListings";
 
 // =============================================
 // MAIN COMPONENT
@@ -64,19 +69,21 @@ export default function MyListings() {
       setLoading(true);
       setError(null);
 
-      const params = new URLSearchParams({ page, limit: 9 });
-      if (statusFilter) params.append("status", statusFilter);
-      if (typeFilter) params.append("listingType", typeFilter);
-      if (search.trim()) params.append("search", search.trim());
+      // Simulate API delay for realistic UX
+      await new Promise(resolve => setTimeout(resolve, 500));
 
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/myListings?${params.toString()}`,
-        { withCredentials: true }
-      );
+      // Use mock data instead of API call
+      const result = filterMockListings({
+        search: search.trim(),
+        statusFilter,
+        typeFilter,
+        page,
+        limit: 9
+      });
 
-      setProperties(data.properties || []);
-      setTotal(data.total || 0);
-      setTotalPages(data.totalPages || 1);
+      setProperties(result.properties || []);
+      setTotal(result.total || 0);
+      setTotalPages(result.totalPages || 1);
     } catch (err) {
       setError(err?.response?.data?.message || "Failed to load listings");
     } finally {
@@ -102,14 +109,19 @@ export default function MyListings() {
 
     try {
       setDeletingId(id);
-      await axios.delete(
-        `${import.meta.env.VITE_BASE_URL}/myListings/${id}`,
-        { withCredentials: true }
-      );
-      setProperties((prev) => prev.filter((p) => p._id !== id));
-      setTotal((prev) => prev - 1);
+      
+      // Use mock data delete function
+      await new Promise(resolve => setTimeout(resolve, 500));
+      const result = deleteMockListing(id);
+      
+      if (result.success) {
+        setProperties((prev) => prev.filter((p) => p._id !== id));
+        setTotal((prev) => prev - 1);
+      } else {
+        alert("Failed to delete property");
+      }
     } catch (err) {
-      alert(err?.response?.data?.message || "Failed to delete property");
+      alert("Failed to delete property");
     } finally {
       setDeletingId(null);
     }
@@ -123,20 +135,24 @@ export default function MyListings() {
     if (property.status === "Rejected" || property.status === "Pending") {
       return;
     }
-    const newStatus = property.status === "available" ? "closed" : "available";
+    const newStatus = property.status === "Available" ? "Closed" : "Available";
 
     try {
       setTogglingId(property._id);
-      const { data } = await axios.patch(
-        `${import.meta.env.VITE_BASE_URL}/myListings/${property._id}/status`,
-        { status: newStatus },
-        { withCredentials: true }
-      );
-      setProperties((prev) =>
-        prev.map((p) => (p._id === property._id ? data.property || data : p))
-      );
+      
+      // Use mock data update function
+      await new Promise(resolve => setTimeout(resolve, 500));
+      const result = updateMockListingStatus(property._id, newStatus);
+      
+      if (result.success) {
+        setProperties((prev) =>
+          prev.map((p) => (p._id === property._id ? { ...p, status: newStatus } : p))
+        );
+      } else {
+        alert("Failed to update status");
+      }
     } catch (err) {
-      alert(err?.response?.data?.message || "Failed to update status");
+      alert("Failed to update status");
     } finally {
       setTogglingId(null);
     }
@@ -150,40 +166,32 @@ export default function MyListings() {
     try {
       setIsUpdating(true);
 
-      const formData = new FormData();
-      formData.append("title", editingProperty.title);
-      formData.append("price", editingProperty.price);
-      formData.append("location", editingProperty.location);
-      formData.append("city", editingProperty.city);
-      formData.append("type", editingProperty.type);
-      formData.append("listingType", editingProperty.listingType);
-      
-      // If new images are uploaded, tell backend to completely overwrite the old array
-      if (editingProperty.newImages && editingProperty.newImages.length > 0) {
-        Array.from(editingProperty.newImages).forEach((file) => {
-          formData.append("images", file);
-        });
-        // Explicit flag informing backend to prune older assets completely
-        formData.append("overwriteImages", "true");
-      }
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 500));
 
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/updateProperty/${editingProperty._id}`,
-        formData,
-        {
-          withCredentials: true,
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
-
+      // Update in-memory mock data
       setProperties((prev) =>
-        prev.map((p) => (p._id === editingProperty._id ? data.property || data : p))
+        prev.map((p) => {
+          if (p._id === editingProperty._id) {
+            return {
+              ...p,
+              title: editingProperty.title,
+              price: editingProperty.price,
+              location: editingProperty.location,
+              city: editingProperty.city,
+              type: editingProperty.type,
+              listingType: editingProperty.listingType,
+              // Note: Image upload won't work with mock data, but we keep existing images
+            };
+          }
+          return p;
+        })
       );
       
       setEditingProperty(null); 
       alert("Property updated successfully!");
     } catch (err) {
-      alert(err?.response?.data?.message || "Failed to update property");
+      alert("Failed to update property");
     } finally {
       setIsUpdating(false);
     }
