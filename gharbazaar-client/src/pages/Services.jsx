@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import {
-  Search, Heart, Menu, ArrowRight, ChevronDown, ChevronRight, Home,
+  Search, ArrowRight, ChevronRight, Home,
   FileText, ShieldCheck, Headset, LayoutGrid, GraduationCap, BriefcaseBusiness,
   UserRound, ShoppingCart, Tag, Building2, UsersRound, ChartNoAxesColumnIncreasing,
   MoreHorizontal, Sofa, Truck, Wifi, Lamp, IndianRupee, Wrench, CarFront,
@@ -129,7 +129,6 @@ export default function Services() {
   const [city, setCity] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedService, setSelectedService] = useState('');
-  const [mobileMenu, setMobileMenu] = useState(false);
 
   const featured = featuredByUser[activeUser] || [
     { title: 'Personalized Property Assistance', desc: 'Tell us what you need and explore suitable options.', price: 'Get a quote', image: photo('photo-1600607687939-ce8a6c25118c', 800) },
@@ -144,14 +143,6 @@ export default function Services() {
   const openEnquiry = (service = '') => { setSelectedService(service); setModalOpen(true); };
 
   return <div className="gb-page">
-    <header className="gb-header">
-      <a className="gb-brand" href="#top" aria-label="GharBazaar home"><span className="gb-brand-icon"><Home size={19} /></span><span>GharBazaar</span></a>
-      <nav className={`gb-nav ${mobileMenu ? 'gb-nav-open' : ''}`} aria-label="Main navigation">
-        <a href="#buy">Buy Property</a><a href="#rent">Rent Property</a><a className="active" href="#services">Services</a><a href="#marketplace">Marketplace</a><a href="#pricing">Pricing</a><a href="#refer">Refer & Earn</a><a href="#about">About</a><a href="#contact">Contact</a>
-      </nav>
-      <div className="gb-header-actions"><button className="gb-icon-button" aria-label="Favorites"><Heart size={18} /></button><button className="gb-btn gb-btn-primary gb-login" onClick={() => openEnquiry('Account assistance')}>Login</button><button className="gb-menu-button" aria-label="Toggle menu" onClick={() => setMobileMenu(!mobileMenu)}>{mobileMenu ? <X /> : <Menu />}</button></div>
-    </header>
-
     <main id="top">
       <div className="gb-breadcrumb">Home <ChevronRight size={13} /> <span>Services</span></div>
       <section className="gb-hero">
@@ -180,8 +171,6 @@ export default function Services() {
 
       <section className="gb-final-cta"><div><span className="gb-eyebrow">NEED A LITTLE GUIDANCE?</span><h2>Still Confused?<br />Let Our Experts Guide You.</h2><p>Tell us what you're looking for, and we'll help you identify a suitable available service.</p><div className="gb-hero-actions"><button className="gb-btn gb-btn-light" onClick={() => openEnquiry()}>Send an Enquiry <ArrowRight size={15} /></button><button className="gb-btn gb-btn-outline-light" onClick={() => openEnquiry('Talk to our team')}><Phone size={15} /> Talk to Our Team</button></div></div><div className="gb-cta-checks"><span><CheckCircle2 /> Personalized guidance</span><span><CheckCircle2 /> Clear service details</span><span><CheckCircle2 /> No obligation to proceed</span></div></section>
     </main>
-
-    <footer className="gb-footer" id="contact"><div className="gb-footer-main"><div className="gb-footer-brand"><a className="gb-brand" href="#top"><span className="gb-brand-icon"><Home size={19} /></span><span>GharBazaar</span></a><p>Your trusted real estate partner for buying, renting, selling and property services across India.</p><div className="gb-socials"><a href="#facebook" aria-label="Facebook">f</a><a href="#instagram" aria-label="Instagram">◎</a><a href="#youtube" aria-label="YouTube">▶</a><a href="#linkedin" aria-label="LinkedIn">in</a></div></div><div><h4>Services</h4><a href="#services">Rental Services</a><a href="#services">Buying & Selling</a><a href="#services">Legal & Documentation</a><a href="#services">Verification & Inspection</a><a href="#services">Property Management</a><a href="#services">Builder & Developer</a></div><div><h4>Company</h4><a href="#about">About Us</a><a href="#careers">Careers</a><a href="#blog">Blog</a><a href="#partner">Partner With Us</a><a href="#advertise">Advertise</a><a href="#sitemap">Sitemap</a></div><div><h4>Get in Touch</h4><p><Phone size={14} /> +91 98765 43210</p><p>support@gharbazaar.com</p><p><MapPin size={14} /> India</p><button className="gb-btn gb-btn-outline-light gb-footer-contact" onClick={() => openEnquiry()}>Contact our team <ArrowRight size={14} /></button></div></div><div className="gb-footer-bottom"><span>© {new Date().getFullYear()} GharBazaar. All rights reserved.</span><span>Made with care for a better real estate experience.</span></div></footer>
     <EnquiryModal open={modalOpen} onClose={() => setModalOpen(false)} initialService={selectedService} />
   </div>;
 }
