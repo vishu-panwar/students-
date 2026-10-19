@@ -59,6 +59,10 @@ export default function MyListings() {
   // Edit Modal State
   const [editingProperty, setEditingProperty] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
+  
+  // Boost Modal State
+  const [boostingProperty, setBoostingProperty] = useState(null);
+  const [isProcessingBoost, setIsProcessingBoost] = useState(false);
 
   // -------------------------
   // FETCH
@@ -198,6 +202,40 @@ export default function MyListings() {
   };
 
   // -------------------------
+  // BOOST PROPERTY
+  // -------------------------
+  const handleBoostSubmit = async (duration) => {
+    try {
+      setIsProcessingBoost(true);
+
+      // Simulate API delay for payment processing
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      // Update property with boost status
+      setProperties((prev) =>
+        prev.map((p) => {
+          if (p._id === boostingProperty._id) {
+            return {
+              ...p,
+              isBoosted: true,
+              boostExpiresAt: new Date(Date.now() + duration * 7 * 24 * 60 * 60 * 1000).toISOString(),
+              boostDuration: duration,
+            };
+          }
+          return p;
+        })
+      );
+      
+      setBoostingProperty(null);
+      alert(`🚀 Property boosted successfully for ${duration} week${duration > 1 ? 's' : ''}! Your listing is now prioritized.`);
+    } catch (err) {
+      alert("Failed to boost property. Please try again.");
+    } finally {
+      setIsProcessingBoost(false);
+    }
+  };
+
+  // -------------------------
   // STATS
   // -------------------------
 
@@ -312,6 +350,7 @@ export default function MyListings() {
                 onDelete={handleDelete}
                 onToggle={handleToggleStatus}
                 onEdit={(p) => setEditingProperty({ ...p, newImages: null })}
+                onBoost={(p) => setBoostingProperty(p)}
                 isDeleting={deletingId === property._id}
                 isToggling={togglingId === property._id}
               />
@@ -479,6 +518,197 @@ export default function MyListings() {
           </div>
         </div>
       )}
+
+      {/* BOOST PROPERTY MODAL */}
+      {boostingProperty && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-3xl max-w-lg w-full shadow-2xl border border-gray-100 overflow-hidden">
+            
+            {/* Modal Header */}
+            <div className="bg-gradient-to-r from-orange-500 to-pink-500 p-6 text-white relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
+              <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full -ml-12 -mb-12"></div>
+              
+              <button 
+                onClick={() => setBoostingProperty(null)}
+                className="absolute top-4 right-4 p-2 text-white/80 hover:text-white rounded-xl hover:bg-white/10 transition z-10"
+              >
+                <X size={20} />
+              </button>
+
+              <div className="relative z-10">
+                <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-3 backdrop-blur-sm">
+                  <Zap size={28} className="fill-white" />
+                </div>
+                <h2 className="text-2xl font-bold">Boost Your Property</h2>
+                <p className="text-white/90 text-sm mt-1">Get 10x more visibility & inquiries</p>
+              </div>
+            </div>
+
+            {/* Property Info */}
+            <div className="p-6 bg-gray-50 border-b border-gray-100">
+              <div className="flex items-start gap-3">
+                <div className="w-16 h-16 bg-gray-200 rounded-xl overflow-hidden shrink-0">
+                  {boostingProperty.images?.[0] ? (
+                    <img src={boostingProperty.images[0]} alt="" className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <ImageOff size={20} className="text-gray-400" />
+                    </div>
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-bold text-gray-900 truncate">{boostingProperty.title}</h3>
+                  <p className="text-sm text-gray-500 truncate flex items-center gap-1 mt-0.5">
+                    <MapPin size={12} />
+                    {boostingProperty.location}, {boostingProperty.city}
+                  </p>
+                  <p className="text-emerald-600 font-bold text-sm mt-1 flex items-center gap-0.5">
+                    <IndianRupee size={13} />
+                    {Number(boostingProperty.price).toLocaleString("en-IN")}
+                    {boostingProperty.listingType === "Rent" && <span className="text-xs text-gray-400 font-normal">/mo</span>}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Benefits */}
+            <div className="p-6 space-y-3">
+              <h3 className="font-bold text-gray-900 text-sm mb-3">What you get with Boost:</h3>
+              
+              <div className="space-y-2.5">
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 bg-orange-50 rounded-lg flex items-center justify-center shrink-0">
+                    <TrendingUp size={16} className="text-orange-500" />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-900 text-sm">Top Rankings</p>
+                    <p className="text-xs text-gray-500">Appear first in search results for your area</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 bg-pink-50 rounded-lg flex items-center justify-center shrink-0">
+                    <Eye size={16} className="text-pink-500" />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-900 text-sm">10x More Visibility</p>
+                    <p className="text-xs text-gray-500">Get featured on homepage & category pages</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center shrink-0">
+                    <Building2 size={16} className="text-purple-500" />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-900 text-sm">Instagram Promotion</p>
+                    <p className="text-xs text-gray-500">Reach thousands through targeted ads</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center shrink-0">
+                    <Zap size={16} className="text-blue-500 fill-blue-500" />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-900 text-sm">Premium Badge</p>
+                    <p className="text-xs text-gray-500">Stand out with exclusive boosted tag</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Pricing Options */}
+            <div className="px-6 pb-6 space-y-3">
+              <h3 className="font-bold text-gray-900 text-sm mb-3">Choose Duration:</h3>
+              
+              {/* 1 Week Plan */}
+              <button
+                onClick={() => handleBoostSubmit(1)}
+                disabled={isProcessingBoost}
+                className="w-full p-4 border-2 border-gray-200 rounded-2xl hover:border-orange-400 hover:bg-orange-50/50 transition-all text-left group"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-bold text-gray-900 group-hover:text-orange-600 transition">1 Week Boost</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Perfect for quick visibility</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-2xl font-bold text-gray-900 group-hover:text-orange-600 transition flex items-center justify-end gap-0.5">
+                      <IndianRupee size={18} />
+                      499
+                    </p>
+                  </div>
+                </div>
+              </button>
+
+              {/* 2 Weeks Plan */}
+              <button
+                onClick={() => handleBoostSubmit(2)}
+                disabled={isProcessingBoost}
+                className="w-full p-4 border-2 border-orange-300 rounded-2xl bg-gradient-to-r from-orange-50 to-pink-50 hover:border-orange-400 transition-all text-left group relative overflow-hidden"
+              >
+                <div className="absolute top-2 right-2 bg-orange-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                  POPULAR
+                </div>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-bold text-gray-900 group-hover:text-orange-600 transition">2 Weeks Boost</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Maximum exposure & results</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-2xl font-bold text-gray-900 group-hover:text-orange-600 transition flex items-center justify-end gap-0.5">
+                      <IndianRupee size={18} />
+                      899
+                    </p>
+                    <p className="text-xs text-emerald-600 font-semibold">Save ₹99</p>
+                  </div>
+                </div>
+              </button>
+
+              {/* 4 Weeks Plan */}
+              <button
+                onClick={() => handleBoostSubmit(4)}
+                disabled={isProcessingBoost}
+                className="w-full p-4 border-2 border-purple-300 rounded-2xl bg-gradient-to-r from-purple-50 to-pink-50 hover:border-purple-400 transition-all text-left group relative overflow-hidden"
+              >
+                <div className="absolute top-2 right-2 bg-purple-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                  BEST VALUE
+                </div>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-bold text-gray-900 group-hover:text-purple-600 transition">4 Weeks Boost</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Ultimate growth package</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-2xl font-bold text-gray-900 group-hover:text-purple-600 transition flex items-center justify-end gap-0.5">
+                      <IndianRupee size={18} />
+                      1,599
+                    </p>
+                    <p className="text-xs text-emerald-600 font-semibold">Save ₹397</p>
+                  </div>
+                </div>
+              </button>
+
+              {isProcessingBoost && (
+                <div className="flex items-center justify-center gap-2 text-sm text-gray-600 py-2">
+                  <Loader2 size={16} className="animate-spin" />
+                  Processing your boost...
+                </div>
+              )}
+            </div>
+
+            {/* Footer Note */}
+            <div className="px-6 pb-6">
+              <div className="bg-blue-50 border border-blue-100 rounded-xl p-3 text-xs text-blue-700">
+                <p className="font-semibold mb-1">💡 Pro Tip:</p>
+                <p>Properties with boost get 10x more inquiries and rent/sell 3x faster than regular listings!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -487,12 +717,24 @@ export default function MyListings() {
 // PROPERTY CARD
 // =============================================
 
-function PropertyCard({ property, onDelete, onToggle, onEdit, isDeleting, isToggling }) {
+function PropertyCard({ property, onDelete, onToggle, onEdit, onBoost, isDeleting, isToggling }) {
   const isAvailable = property.status === "available";
+  const isBoosted = property.isBoosted;
   const coverImage = property.images?.[0];
 
   return (
-    <div className="bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden group flex flex-col">
+    <div className={`bg-white rounded-3xl border ${isBoosted ? 'border-orange-300 shadow-lg shadow-orange-100' : 'border-gray-100'} shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden group flex flex-col relative`}>
+      
+      {/* Boosted Corner Badge */}
+      {isBoosted && (
+        <div className="absolute top-0 right-0 z-10">
+          <div className="bg-gradient-to-br from-orange-500 to-pink-500 text-white text-xs font-bold px-3 py-1.5 rounded-bl-2xl shadow-lg flex items-center gap-1">
+            <Zap size={12} className="fill-white" />
+            BOOSTED
+          </div>
+        </div>
+      )}
+
       {/* IMAGE */}
       <div className="relative h-48 bg-gray-100 overflow-hidden">
         {coverImage ? (
@@ -636,37 +878,46 @@ function PropertyCard({ property, onDelete, onToggle, onEdit, isDeleting, isTogg
 
           {/* Row 2: Boost Button with Info */}
           <div className="flex items-center gap-2">
-            <button
-              onClick={() => alert('Boost feature coming soon! This will promote your property.')}
-              className="flex items-center gap-1.5 text-xs font-bold px-4 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:from-orange-600 hover:to-pink-600 transition-all shadow-md hover:shadow-lg flex-1 justify-center"
-            >
-              <Zap size={15} className="fill-white" />
-              Boost Property
-            </button>
-            
-            {/* Info Icon with Tooltip */}
-            <div className="relative group">
-              <button className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition">
-                <HelpCircle size={16} />
-              </button>
-              
-              {/* Tooltip */}
-              <div className="absolute bottom-full right-0 mb-2 w-72 bg-gray-900 text-white text-xs rounded-xl p-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 shadow-xl z-10">
-                <div className="font-bold text-sm mb-2 text-orange-400">🚀 Boost Your Property</div>
-                <ul className="space-y-1.5 text-gray-200">
-                  <li>• <strong>Top Rankings:</strong> Appear first in your area</li>
-                  <li>• <strong>Instagram Ads:</strong> Reach 1000s of potential buyers</li>
-                  <li>• <strong>10x Visibility:</strong> Get more views & inquiries</li>
-                  <li>• <strong>Premium Badge:</strong> Stand out from competitors</li>
-                  <li>• <strong>Fast Results:</strong> Rent/sell 3x faster</li>
-                </ul>
-                <div className="mt-3 pt-2 border-t border-gray-700 text-orange-300 font-semibold">
-                  💰 Starting from ₹499/week
-                </div>
-                {/* Arrow */}
-                <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-gray-900"></div>
+            {isBoosted ? (
+              <div className="flex items-center gap-2 text-xs px-4 py-2.5 rounded-xl bg-gradient-to-r from-orange-100 to-pink-100 text-orange-700 border border-orange-200 flex-1 justify-center">
+                <Zap size={15} className="fill-orange-500" />
+                <span className="font-bold">Boosted until {new Date(property.boostExpiresAt).toLocaleDateString()}</span>
               </div>
-            </div>
+            ) : (
+              <>
+                <button
+                  onClick={() => onBoost(property)}
+                  className="flex items-center gap-1.5 text-xs font-bold px-4 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:from-orange-600 hover:to-pink-600 transition-all shadow-md hover:shadow-lg flex-1 justify-center"
+                >
+                  <Zap size={15} className="fill-white" />
+                  Boost Property
+                </button>
+                
+                {/* Info Icon with Tooltip */}
+                <div className="relative group/tooltip">
+                  <button className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition">
+                    <HelpCircle size={16} />
+                  </button>
+                  
+                  {/* Tooltip */}
+                  <div className="absolute bottom-full right-0 mb-2 w-72 bg-gray-900 text-white text-xs rounded-xl p-4 opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all duration-200 shadow-xl z-10">
+                    <div className="font-bold text-sm mb-2 text-orange-400">🚀 Boost Your Property</div>
+                    <ul className="space-y-1.5 text-gray-200">
+                      <li>• <strong>Top Rankings:</strong> Appear first in your area</li>
+                      <li>• <strong>Instagram Ads:</strong> Reach 1000s of potential buyers</li>
+                      <li>• <strong>10x Visibility:</strong> Get more views & inquiries</li>
+                      <li>• <strong>Premium Badge:</strong> Stand out from competitors</li>
+                      <li>• <strong>Fast Results:</strong> Rent/sell 3x faster</li>
+                    </ul>
+                    <div className="mt-3 pt-2 border-t border-gray-700 text-orange-300 font-semibold">
+                      💰 Starting from ₹499/week
+                    </div>
+                    {/* Arrow */}
+                    <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-gray-900"></div>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
