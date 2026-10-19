@@ -22,6 +22,8 @@ import {
   Edit3,
   X,
   Upload,
+  Zap,
+  HelpCircle,
 } from "lucide-react";
 
 // =============================================
@@ -199,7 +201,7 @@ export default function MyListings() {
   // =============================================
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-16">
+    <div className="min-h-screen bg-[#F5F1E8] pb-16">
       {/* PAGE HEADER */}
       <div className="mb-8">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -518,6 +520,17 @@ function PropertyCard({ property, onDelete, onToggle, onEdit, isDeleting, isTogg
 
       {/* BODY */}
       <div className="p-5 flex flex-col flex-1">
+        {/* Category Badge - Rent/Sale */}
+        <div className="mb-2">
+          <span className={`inline-block text-xs font-bold px-3 py-1 rounded-full ${
+            property.listingType === "Rent" 
+              ? "bg-blue-100 text-blue-700 border border-blue-200" 
+              : "bg-purple-100 text-purple-700 border border-purple-200"
+          }`}>
+            For {property.listingType}
+          </span>
+        </div>
+
         <h3 className="font-bold text-gray-900 text-lg truncate">{property.title}</h3>
 
         <div className="flex items-center gap-1 text-gray-500 text-sm mt-1">
@@ -563,52 +576,90 @@ function PropertyCard({ property, onDelete, onToggle, onEdit, isDeleting, isTogg
         )}
 
         {/* ACTIONS */}
-        <div className="flex items-center gap-2 mt-auto pt-4 border-t border-gray-100">
-          {/* Toggle Status */}
-          <button
-            onClick={() => onToggle(property)}
-            disabled={isToggling}
-            title={isAvailable ? "Mark as Closed" : "Mark as Available"}
-            className={`flex items-center gap-1.5 text-xs font-semibold px-2.5 py-2 rounded-xl transition flex-1 justify-center ${
-              isAvailable
-                ? "bg-amber-50 text-amber-600 hover:bg-amber-100"
-                : property.status === "Rejected" || property.status === "Pending"
-                ? "bg-gray-100 text-emerald-600 hover:cursor-not-allowed"
-                : "bg-emerald-50 text-emerald-600 hover:bg-emerald-100"
-            }`}
-          >
-            {isToggling ? (
-              <Loader2 size={14} className="animate-spin" />
-            ) : isAvailable ? (
-              <ToggleRight size={16} />
-            ) : (
-              <ToggleLeft size={16} />
-            )}
-            {isAvailable ? "Close" : "Activate"}
-          </button>
+        <div className="flex flex-col gap-2 mt-auto pt-4 border-t border-gray-100">
+          {/* Row 1: Toggle, Edit, Delete */}
+          <div className="flex items-center gap-2">
+            {/* Toggle Status */}
+            <button
+              onClick={() => onToggle(property)}
+              disabled={isToggling}
+              title={isAvailable ? "Mark as Closed" : "Mark as Available"}
+              className={`flex items-center gap-1.5 text-xs font-semibold px-2.5 py-2 rounded-xl transition flex-1 justify-center ${
+                isAvailable
+                  ? "bg-amber-50 text-amber-600 hover:bg-amber-100"
+                  : property.status === "Rejected" || property.status === "Pending"
+                  ? "bg-gray-100 text-emerald-600 hover:cursor-not-allowed"
+                  : "bg-emerald-50 text-emerald-600 hover:bg-emerald-100"
+              }`}
+            >
+              {isToggling ? (
+                <Loader2 size={14} className="animate-spin" />
+              ) : isAvailable ? (
+                <ToggleRight size={16} />
+              ) : (
+                <ToggleLeft size={16} />
+              )}
+              {isAvailable ? "Close" : "Activate"}
+            </button>
 
-          {/* Edit Button */}
-          <button
-            onClick={() => onEdit(property)}
-            className="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-2 rounded-xl bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
-          >
-            <Edit3 size={14} />
-            Edit
-          </button>
+            {/* Edit Button */}
+            <button
+              onClick={() => onEdit(property)}
+              className="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-2 rounded-xl bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
+            >
+              <Edit3 size={14} />
+              Edit
+            </button>
 
-          {/* Delete */}
-          <button
-            onClick={() => onDelete(property._id)}
-            disabled={isDeleting}
-            className="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-2 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 transition"
-          >
-            {isDeleting ? (
-              <Loader2 size={14} className="animate-spin" />
-            ) : (
-              <Trash2 size={14} />
-            )}
-            Delete
-          </button>
+            {/* Delete */}
+            <button
+              onClick={() => onDelete(property._id)}
+              disabled={isDeleting}
+              className="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-2 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 transition"
+            >
+              {isDeleting ? (
+                <Loader2 size={14} className="animate-spin" />
+              ) : (
+                <Trash2 size={14} />
+              )}
+              Delete
+            </button>
+          </div>
+
+          {/* Row 2: Boost Button with Info */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => alert('Boost feature coming soon! This will promote your property.')}
+              className="flex items-center gap-1.5 text-xs font-bold px-4 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:from-orange-600 hover:to-pink-600 transition-all shadow-md hover:shadow-lg flex-1 justify-center"
+            >
+              <Zap size={15} className="fill-white" />
+              Boost Property
+            </button>
+            
+            {/* Info Icon with Tooltip */}
+            <div className="relative group">
+              <button className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition">
+                <HelpCircle size={16} />
+              </button>
+              
+              {/* Tooltip */}
+              <div className="absolute bottom-full right-0 mb-2 w-72 bg-gray-900 text-white text-xs rounded-xl p-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 shadow-xl z-10">
+                <div className="font-bold text-sm mb-2 text-orange-400">🚀 Boost Your Property</div>
+                <ul className="space-y-1.5 text-gray-200">
+                  <li>• <strong>Top Rankings:</strong> Appear first in your area</li>
+                  <li>• <strong>Instagram Ads:</strong> Reach 1000s of potential buyers</li>
+                  <li>• <strong>10x Visibility:</strong> Get more views & inquiries</li>
+                  <li>• <strong>Premium Badge:</strong> Stand out from competitors</li>
+                  <li>• <strong>Fast Results:</strong> Rent/sell 3x faster</li>
+                </ul>
+                <div className="mt-3 pt-2 border-t border-gray-700 text-orange-300 font-semibold">
+                  💰 Starting from ₹499/week
+                </div>
+                {/* Arrow */}
+                <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-gray-900"></div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

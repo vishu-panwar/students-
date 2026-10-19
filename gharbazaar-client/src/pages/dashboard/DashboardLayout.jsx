@@ -16,6 +16,7 @@ import {
   Building,
   List,
   AlertCircle,
+  FileText,
 } from "lucide-react";
 import axios from "axios";
 import { socket } from "../../socket/socket";
@@ -33,6 +34,7 @@ export default function DashboardLayout() {
     { path: "/dashboard/my-bookings", icon: FileSignature, label: "My Bookings" },
     { path: "/dashboard/favorites", icon: Heart, label: "Favorites" },
     { path: "/dashboard/payments", icon: CreditCard, label: "Payments" },
+    { path: "/dashboard/documents", icon: FileText, label: "Documents" },
     { path: "/dashboard/dispute-resolution", icon: AlertCircle, label: "Dispute Resolution" },
     { path: "/dashboard/kyc-verification", icon: Shield, label: "KYC Verification" },
     { path: "/dashboard/messages", icon: MessageSquare, label: "Messages" },

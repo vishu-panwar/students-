@@ -5,7 +5,10 @@ const app = express();
 const PORT = 5000;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5173', // Vite dev server
+  credentials: true
+}));
 app.use(express.json());
 
 // Import mock data (we'll use the same data from client)
@@ -200,8 +203,167 @@ app.get('/advertisement', (req, res) => {
   res.json({ advertisements });
 });
 
+// Get user's listed properties (for seller dashboard)
+app.get('/myListings', (req, res) => {
+  console.log('📥 GET /myListings', { query: req.query, cookies: req.cookies });
+  
+  const { page = 1, limit = 9, status, listingType, search } = req.query;
+  
+  // Filter properties by demo user
+  let userProperties = mockProperties.filter(
+    (prop) => prop.ownerEmail === 'demo@gharbazaar.in'
+  );
+  
+  console.log(`   Found ${userProperties.length} demo user properties`);
+  
+  // Apply filters
+  if (status) {
+    userProperties = userProperties.filter(p => 
+      p.status.toLowerCase() === status.toLowerCase()
+    );
+    console.log(`   After status filter: ${userProperties.length}`);
+  }
+  
+  if (listingType) {
+    userProperties = userProperties.filter(p => 
+      p.type.toLowerCase().includes(listingType.toLowerCase())
+    );
+    console.log(`   After type filter: ${userProperties.length}`);
+  }
+  
+  if (search) {
+    const searchLower = search.toLowerCase();
+    userProperties = userProperties.filter(p => 
+      p.title.toLowerCase().includes(searchLower) ||
+      p.location.toLowerCase().includes(searchLower) ||
+      p.city.toLowerCase().includes(searchLower)
+    );
+    console.log(`   After search filter: ${userProperties.length}`);
+  }
+  
+  // Pagination
+  const startIndex = (page - 1) * limit;
+  const endIndex = startIndex + parseInt(limit);
+  const paginatedData = userProperties.slice(startIndex, endIndex);
+  
+  console.log(`   Returning ${paginatedData.length} properties (page ${page})`);
+  
+  res.json({
+    success: true,
+    properties: paginatedData,
+    total: userProperties.length,
+    totalPages: Math.ceil(userProperties.length / limit),
+    currentPage: parseInt(page)
+  });
+});
+
+// Get user's listed properties (for seller dashboard)
+app.get('/api/user/properties', (req, res) => {
+  const { email } = req.query;
+  console.log('📥 GET /api/user/properties', { email });
+  
+  // Filter properties by owner email (demo user)
+  const userProperties = mockProperties.filter(
+    (prop) => prop.ownerEmail === 'demo@gharbazaar.in'
+  );
+  
+  res.json({
+    success: true,
+    data: userProperties,
+    total: userProperties.length,
+    active: userProperties.filter(p => p.status === 'Available').length,
+    closed: userProperties.filter(p => p.status === 'Closed').length
+  });
+});
+
+// Get property schedule/bookings
+app.get('/api/property/:id/schedule', (req, res) => {
+  const { id } = req.params;
+  console.log('📥 GET /api/property/:id/schedule', { id });
+  
+  const property = mockProperties.find((prop) => prop._id === id);
+  
+  if (property && property.schedule) {
+    res.json({
+      success: true,
+      data: property.schedule
+    });
+  } else {
+    res.json({
+      success: true,
+      data: []
+    });
+  }
+});
+
+// Service Enquiry endpoint
+app.post('/api/service-enquiry', (req, res) => {
+  const { name, email, phone, customerType, serviceId, serviceName, message, city, budget } = req.body;
+  
+  console.log('📥 POST /api/service-enquiry', {
+    name,
+    email,
+    phone,
+    customerType,
+    serviceId,
+    serviceName,
+    city,
+    budget
+  });
+  
+  // Validation
+  if (!name || !email || !phone || !customerType || !serviceId) {
+    return res.status(400).json({
+      success: false,
+      message: 'Please provide all required fields'
+    });
+  }
+  
+  // Phone validation
+  if (!/^[6-9]\d{9}$/.test(phone)) {
+    return res.status(400).json({
+      success: false,
+      message: 'Please provide a valid 10-digit mobile number'
+    });
+  }
+  
+  // Email validation
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return res.status(400).json({
+      success: false,
+      message: 'Please provide a valid email address'
+    });
+  }
+  
+  // Mock success response
+  // In production, this would:
+  // 1. Store enquiry in database
+  // 2. Send notification to admin
+  // 3. Send confirmation email to customer
+  // 4. Create a CRM ticket
+  
+  res.json({
+    success: true,
+    message: 'Service enquiry submitted successfully! Our team will contact you within 2 business hours.',
+    data: {
+      enquiryId: `ENQ-${Date.now()}`,
+      name,
+      email,
+      phone,
+      serviceName,
+      customerType,
+      status: 'pending',
+      submittedAt: new Date().toISOString()
+    }
+  });
+  
+  console.log('✅ Service enquiry stored successfully');
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`🚀 Mock server running on http://localhost:${PORT}`);
   console.log(`📦 Serving ${mockProperties.length} mock properties`);
+  const demoProperties = mockProperties.filter(p => p.ownerEmail === 'demo@gharbazaar.in');
+  console.log(`👤 Demo User has ${demoProperties.length} listed properties`);
 });

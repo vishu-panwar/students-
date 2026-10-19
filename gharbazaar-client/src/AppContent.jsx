@@ -65,6 +65,7 @@ const MyBookings         = lazy(() => import("./pages/dashboard/MyBookings"));
 const BookingDetails     = lazy(() => import("./pages/dashboard/BookingDetails"));
 const DisputeResolution  = lazy(() => import("./pages/dashboard/DisputeResolution"));
 const DashboardPayments  = lazy(() => import("./pages/DashboardPayments"));
+const DashboardDocuments = lazy(() => import("./pages/DashboardDocuments"));
 const DashboardSettings  = lazy(() => import("./pages/DashboardSettings"));
 const KYCVerification    = lazy(() => import("./pages/dashboard/kyc/KYCVerification"));
 const MyProposals        = lazy(() => import("./pages/MyProposals"));
@@ -220,6 +221,7 @@ export default function AppContent() {
               <Route path="favorites"               element={<Favorites />} />
               <Route path="cart"                    element={<Cart />} />
               <Route path="payments"                element={<DashboardPayments />} />
+              <Route path="documents"               element={<DashboardDocuments />} />
               <Route path="kyc-verification"        element={<KYCVerification />} />
               <Route path="proposals"               element={<MyProposals />} />
               <Route path="proposals/:id"           element={<ProposalDetails />} />

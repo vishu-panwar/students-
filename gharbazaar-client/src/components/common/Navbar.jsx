@@ -4,7 +4,7 @@ import { useCart } from "../../context/CartContext";
 import { 
   Search, Heart, Menu, X, LogOut, Loader2,
   Home, ShoppingBag, Briefcase, DollarSign,
-  Gift, Info, Phone, LayoutDashboard, CircleUserRound
+  Gift, Info, Phone, LayoutDashboard, CircleUserRound, TrendingUp
 } from "lucide-react";
 import axios from "axios";
 import { useGetBookmarkQuery } from "../../store/propertyQuery/getPropertyQuery";
@@ -12,7 +12,19 @@ import { toast } from "react-toastify";
 
 const NAV_LINKS = [
   { label: "Properties",   path: "/",           icon: Home },
-  { label: "Services",     path: "/services",   icon: Briefcase },
+  { 
+    label: "Services",     
+    path: "/services",   
+    icon: Briefcase,
+    hasDropdown: true,
+    dropdown: [
+      { label: "For Buyers", path: "/services?type=buyer", icon: Home },
+      { label: "For Sellers", path: "/services?type=seller", icon: TrendingUp },
+      { label: "For Tenants", path: "/services?type=tenant", icon: CircleUserRound },
+      { label: "For Landlords", path: "/services?type=landlord", icon: LayoutDashboard },
+      { label: "For Investors", path: "/services?type=investor", icon: DollarSign },
+    ]
+  },
   { label: "Marketplace",  path: "/marketplace",icon: ShoppingBag },
   { label: "Pricing",      path: "/pricing",    icon: DollarSign },
   { label: "Refer & Earn", path: "/refer",      icon: Gift },
@@ -32,7 +44,9 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const [showServicesDropdown, setShowServicesDropdown] = useState(false);
   const profileDropdownRef = useRef(null);
+  const servicesDropdownRef = useRef(null);
 
   // Search and Debounce States
   const [searchQuery, setSearchQuery] = useState("");
@@ -115,6 +129,9 @@ export default function Navbar() {
       }
       if (profileDropdownRef.current && !profileDropdownRef.current.contains(event.target)) {
         setShowProfileDropdown(false);
+      }
+      if (servicesDropdownRef.current && !servicesDropdownRef.current.contains(event.target)) {
+        setShowServicesDropdown(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -214,9 +231,55 @@ export default function Navbar() {
 
             {/* Desktop Nav */}
             <nav className="hidden lg:flex items-center gap-6">
-              {NAV_LINKS.map(({ label, path }) => {
-                const isActive = location.pathname === path;
+              {NAV_LINKS.map(({ label, path, hasDropdown, dropdown }) => {
+                const isActive = location.pathname === path || (label === "Services" && location.pathname.startsWith("/services"));
                 const isAbout = label === "About";
+
+                if (hasDropdown) {
+                  return (
+                    <div 
+                      key={label}
+                      ref={servicesDropdownRef}
+                      className="relative"
+                      onMouseEnter={() => setShowServicesDropdown(true)}
+                      onMouseLeave={() => setShowServicesDropdown(false)}
+                    >
+                      <Link
+                        to={path}
+                        className={`relative text-[15px] font-medium transition-colors ${
+                          isActive
+                            ? "text-black"
+                            : "text-gray-700 hover:text-black"
+                        }`}
+                      >
+                        {label}
+                        {isActive && (
+                          <span className="absolute left-0 -bottom-[14px] h-[2px] w-full bg-black rounded-full" />
+                        )}
+                      </Link>
+
+                      {/* Services Dropdown */}
+                      {showServicesDropdown && (
+                        <div className="absolute top-full left-0 mt-2 w-48 bg-white border border-gray-200 rounded-xl shadow-xl z-50 overflow-hidden">
+                          {dropdown.map((item) => {
+                            const ItemIcon = item.icon;
+                            return (
+                              <Link
+                                key={item.path}
+                                to={item.path}
+                                onClick={() => setShowServicesDropdown(false)}
+                                className="flex items-center gap-3 px-4 py-3 hover:bg-green-50 transition-colors border-b border-gray-100 last:border-0"
+                              >
+                                <ItemIcon size={18} className="text-green-700 shrink-0" strokeWidth={1.8} />
+                                <span className="text-sm font-medium text-gray-700">{item.label}</span>
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
 
                 return (
                   <Link
@@ -440,8 +503,39 @@ export default function Navbar() {
             )}
 
             {/* Nav links */}
-            {NAV_LINKS.map(({ label, path, icon: Icon }) => {
+            {NAV_LINKS.map(({ label, path, icon: Icon, hasDropdown, dropdown }) => {
               const isAbout = label === "About";
+              
+              if (hasDropdown) {
+                return (
+                  <div key={label}>
+                    <Link
+                      to={path}
+                      onClick={() => setMobileOpen(false)}
+                      className="flex items-center gap-4 px-5 py-[15px] border-b border-[#d5cfc5] text-[#0A0A0A] hover:bg-black/5 transition-colors"
+                    >
+                      <Icon size={20} className="text-[#0A0A0A] shrink-0" strokeWidth={1.8} />
+                      <span className="text-[15px] font-medium">{label}</span>
+                    </Link>
+                    {/* Dropdown items in mobile */}
+                    {dropdown.map((subItem) => {
+                      const SubIcon = subItem.icon;
+                      return (
+                        <Link
+                          key={subItem.path}
+                          to={subItem.path}
+                          onClick={() => setMobileOpen(false)}
+                          className="flex items-center gap-4 px-5 py-3 pl-14 bg-gray-50 border-b border-[#d5cfc5] text-gray-700 hover:bg-black/5 transition-colors"
+                        >
+                          <SubIcon size={16} className="text-green-700 shrink-0" strokeWidth={1.8} />
+                          <span className="text-[14px] font-medium">{subItem.label}</span>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                );
+              }
+              
               return (
                 <Link
                   key={label}
