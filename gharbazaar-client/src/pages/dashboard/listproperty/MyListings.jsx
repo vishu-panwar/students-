@@ -519,22 +519,22 @@ export default function MyListings() {
         </div>
       )}
 
-      {/* BOOST PROPERTY MODAL - Horizontal Premium Design */}
+      {/* BOOST PROPERTY MODAL - Matching Website Theme */}
       {boostingProperty && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md p-4">
-          <div className="bg-white rounded-3xl max-w-6xl w-full shadow-2xl border border-gray-200 overflow-hidden">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="bg-[#F5F1E8] rounded-3xl max-w-6xl w-full shadow-2xl border-2 border-gray-200 overflow-hidden">
             
             {/* Close Button */}
             <button 
               onClick={() => setBoostingProperty(null)}
-              className="absolute top-6 right-6 p-2.5 bg-white/90 hover:bg-white text-gray-600 hover:text-gray-900 rounded-full shadow-lg hover:shadow-xl transition-all z-20 backdrop-blur-sm"
+              className="absolute top-6 right-6 p-2.5 bg-white hover:bg-gray-50 text-gray-700 hover:text-gray-900 rounded-full shadow-lg hover:shadow-xl transition-all z-20"
             >
               <X size={20} />
             </button>
 
             <div className="flex flex-col lg:flex-row">
               {/* LEFT SIDE - Property Info & Benefits */}
-              <div className="lg:w-2/5 bg-gradient-to-br from-orange-500 via-pink-500 to-purple-600 p-8 text-white relative overflow-hidden">
+              <div className="lg:w-2/5 bg-gradient-to-br from-amber-700 via-orange-600 to-amber-800 p-8 text-white relative overflow-hidden">
                 {/* Decorative Elements */}
                 <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -mr-20 -mt-20"></div>
                 <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full -ml-16 -mb-16"></div>
@@ -543,17 +543,17 @@ export default function MyListings() {
                 <div className="relative z-10">
                   {/* Header */}
                   <div className="mb-6">
-                    <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-4 backdrop-blur-sm">
+                    <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-4 backdrop-blur-sm border border-white/30">
                       <Zap size={32} className="fill-white" />
                     </div>
                     <h2 className="text-3xl font-bold mb-2">Boost Your Property</h2>
-                    <p className="text-white/90">Get 10x more visibility & close deals faster</p>
+                    <p className="text-amber-50">Get 10x more visibility & close deals faster</p>
                   </div>
 
                   {/* Property Card */}
-                  <div className="bg-white/15 backdrop-blur-md rounded-2xl p-4 mb-6 border border-white/20">
+                  <div className="bg-white/15 backdrop-blur-md rounded-2xl p-4 mb-6 border border-white/30 shadow-lg">
                     <div className="flex items-start gap-3">
-                      <div className="w-20 h-20 bg-white/20 rounded-xl overflow-hidden shrink-0">
+                      <div className="w-20 h-20 bg-white/20 rounded-xl overflow-hidden shrink-0 border-2 border-white/30">
                         {boostingProperty.images?.[0] ? (
                           <img src={boostingProperty.images[0]} alt="" className="w-full h-full object-cover" />
                         ) : (
@@ -564,80 +564,80 @@ export default function MyListings() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <h3 className="font-bold text-white text-lg leading-tight mb-1">{boostingProperty.title}</h3>
-                        <p className="text-white/80 text-sm flex items-center gap-1 mb-2">
+                        <p className="text-amber-100 text-sm flex items-center gap-1 mb-2">
                           <MapPin size={14} />
                           {boostingProperty.location}, {boostingProperty.city}
                         </p>
                         <p className="text-white font-bold text-lg flex items-center gap-0.5">
                           <IndianRupee size={16} />
                           {Number(boostingProperty.price).toLocaleString("en-IN")}
-                          {boostingProperty.listingType === "Rent" && <span className="text-sm text-white/70 font-normal">/mo</span>}
+                          {boostingProperty.listingType === "Rent" && <span className="text-sm text-amber-100 font-normal">/mo</span>}
                         </p>
                       </div>
                     </div>
                   </div>
 
                   {/* Benefits */}
-                  <div className="space-y-4">
-                    <h3 className="font-bold text-lg mb-3">What You Get:</h3>
+                  <div className="space-y-3.5">
+                    <h3 className="font-bold text-lg mb-3 text-amber-50">What You Get:</h3>
                     
                     <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center shrink-0 backdrop-blur-sm">
+                      <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center shrink-0 backdrop-blur-sm border border-white/30">
                         <TrendingUp size={20} />
                       </div>
                       <div>
                         <p className="font-semibold text-white">Priority Rankings</p>
-                        <p className="text-sm text-white/80">Appear at the top of search results</p>
+                        <p className="text-sm text-amber-100">Appear at the top of search results</p>
                       </div>
                     </div>
 
                     <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center shrink-0 backdrop-blur-sm">
+                      <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center shrink-0 backdrop-blur-sm border border-white/30">
                         <Eye size={20} />
                       </div>
                       <div>
                         <p className="font-semibold text-white">10x Visibility Boost</p>
-                        <p className="text-sm text-white/80">Featured on homepage & categories</p>
+                        <p className="text-sm text-amber-100">Featured on homepage & categories</p>
                       </div>
                     </div>
 
                     <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center shrink-0 backdrop-blur-sm">
+                      <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center shrink-0 backdrop-blur-sm border border-white/30">
                         <Building2 size={20} />
                       </div>
                       <div>
                         <p className="font-semibold text-white">Social Media Ads</p>
-                        <p className="text-sm text-white/80">Instagram & Facebook promotion</p>
+                        <p className="text-sm text-amber-100">Instagram & Facebook promotion</p>
                       </div>
                     </div>
 
                     <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center shrink-0 backdrop-blur-sm">
+                      <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center shrink-0 backdrop-blur-sm border border-white/30">
                         <Zap size={20} className="fill-white" />
                       </div>
                       <div>
                         <p className="font-semibold text-white">Premium Badge</p>
-                        <p className="text-sm text-white/80">Exclusive "Boosted" tag & styling</p>
+                        <p className="text-sm text-amber-100">Exclusive "Boosted" tag & styling</p>
                       </div>
                     </div>
                   </div>
 
                   {/* Stats */}
-                  <div className="mt-6 pt-6 border-t border-white/20 grid grid-cols-2 gap-4">
-                    <div>
+                  <div className="mt-6 pt-6 border-t border-white/30 grid grid-cols-2 gap-4">
+                    <div className="bg-white/10 rounded-xl p-3 backdrop-blur-sm border border-white/20">
                       <p className="text-3xl font-bold">10x</p>
-                      <p className="text-sm text-white/80">More Views</p>
+                      <p className="text-sm text-amber-100">More Views</p>
                     </div>
-                    <div>
+                    <div className="bg-white/10 rounded-xl p-3 backdrop-blur-sm border border-white/20">
                       <p className="text-3xl font-bold">3x</p>
-                      <p className="text-sm text-white/80">Faster Sales</p>
+                      <p className="text-sm text-amber-100">Faster Sales</p>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* RIGHT SIDE - Pricing Plans */}
-              <div className="lg:w-3/5 p-8 lg:p-10">
+              <div className="lg:w-3/5 p-8 lg:p-10 bg-[#F5F1E8]">
                 <div className="max-w-2xl mx-auto">
                   <h3 className="text-2xl font-bold text-gray-900 mb-2">Choose Your Plan</h3>
                   <p className="text-gray-600 mb-8">Select the duration that works best for you</p>
@@ -647,22 +647,22 @@ export default function MyListings() {
                     <button
                       onClick={() => handleBoostSubmit(1)}
                       disabled={isProcessingBoost}
-                      className="relative p-6 border-2 border-gray-200 rounded-2xl hover:border-orange-400 hover:shadow-lg transition-all text-left group bg-white"
+                      className="relative p-6 border-2 border-gray-300 rounded-2xl hover:border-amber-600 hover:shadow-xl transition-all text-left group bg-white"
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex-1">
                           <div className="flex items-center gap-3 mb-2">
-                            <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center group-hover:bg-orange-200 transition">
-                              <Zap size={24} className="text-orange-600" />
+                            <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center group-hover:bg-amber-200 transition border border-amber-200">
+                              <Zap size={24} className="text-amber-700" />
                             </div>
                             <div>
-                              <p className="text-xl font-bold text-gray-900 group-hover:text-orange-600 transition">1 Week Boost</p>
-                              <p className="text-sm text-gray-500">Quick visibility boost</p>
+                              <p className="text-xl font-bold text-gray-900 group-hover:text-amber-700 transition">1 Week Boost</p>
+                              <p className="text-sm text-gray-600">Quick visibility boost</p>
                             </div>
                           </div>
                         </div>
                         <div className="text-right">
-                          <p className="text-4xl font-bold text-gray-900 group-hover:text-orange-600 transition flex items-center justify-end gap-1">
+                          <p className="text-4xl font-bold text-gray-900 group-hover:text-amber-700 transition flex items-center justify-end gap-1">
                             <IndianRupee size={28} />
                             499
                           </p>
@@ -675,29 +675,29 @@ export default function MyListings() {
                     <button
                       onClick={() => handleBoostSubmit(2)}
                       disabled={isProcessingBoost}
-                      className="relative p-6 border-3 border-orange-400 rounded-2xl bg-gradient-to-br from-orange-50 to-pink-50 hover:shadow-xl transition-all text-left group shadow-md"
+                      className="relative p-6 border-2 border-amber-500 rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50 hover:shadow-xl transition-all text-left group shadow-lg"
                     >
-                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-orange-500 to-pink-500 text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-lg">
+                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-600 to-orange-600 text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-lg">
                         ⭐ MOST POPULAR
                       </div>
                       <div className="flex items-center justify-between mt-2">
                         <div className="flex-1">
                           <div className="flex items-center gap-3 mb-2">
-                            <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-pink-400 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform border border-amber-600">
                               <Zap size={24} className="text-white fill-white" />
                             </div>
                             <div>
-                              <p className="text-xl font-bold text-gray-900 group-hover:text-orange-600 transition">2 Weeks Boost</p>
-                              <p className="text-sm text-gray-600">Maximum exposure guaranteed</p>
+                              <p className="text-xl font-bold text-gray-900 group-hover:text-amber-700 transition">2 Weeks Boost</p>
+                              <p className="text-sm text-gray-700">Maximum exposure guaranteed</p>
                             </div>
                           </div>
                         </div>
                         <div className="text-right">
-                          <p className="text-4xl font-bold text-gray-900 group-hover:text-orange-600 transition flex items-center justify-end gap-1">
+                          <p className="text-4xl font-bold text-gray-900 group-hover:text-amber-700 transition flex items-center justify-end gap-1">
                             <IndianRupee size={28} />
                             899
                           </p>
-                          <p className="text-sm text-emerald-600 font-semibold mt-1">Save ₹99 • ₹64/day</p>
+                          <p className="text-sm text-emerald-700 font-semibold mt-1">Save ₹99 • ₹64/day</p>
                         </div>
                       </div>
                     </button>
@@ -706,50 +706,50 @@ export default function MyListings() {
                     <button
                       onClick={() => handleBoostSubmit(4)}
                       disabled={isProcessingBoost}
-                      className="relative p-6 border-3 border-purple-400 rounded-2xl bg-gradient-to-br from-purple-50 to-pink-50 hover:shadow-xl transition-all text-left group shadow-md"
+                      className="relative p-6 border-2 border-emerald-500 rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50 hover:shadow-xl transition-all text-left group shadow-lg"
                     >
-                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-lg">
+                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-lg">
                         💎 BEST VALUE
                       </div>
                       <div className="flex items-center justify-between mt-2">
                         <div className="flex-1">
                           <div className="flex items-center gap-3 mb-2">
-                            <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform border border-emerald-600">
                               <Zap size={24} className="text-white fill-white" />
                             </div>
                             <div>
-                              <p className="text-xl font-bold text-gray-900 group-hover:text-purple-600 transition">4 Weeks Boost</p>
-                              <p className="text-sm text-gray-600">Ultimate growth package</p>
+                              <p className="text-xl font-bold text-gray-900 group-hover:text-emerald-700 transition">4 Weeks Boost</p>
+                              <p className="text-sm text-gray-700">Ultimate growth package</p>
                             </div>
                           </div>
                         </div>
                         <div className="text-right">
-                          <p className="text-4xl font-bold text-gray-900 group-hover:text-purple-600 transition flex items-center justify-end gap-1">
+                          <p className="text-4xl font-bold text-gray-900 group-hover:text-emerald-700 transition flex items-center justify-end gap-1">
                             <IndianRupee size={28} />
                             1,599
                           </p>
-                          <p className="text-sm text-emerald-600 font-semibold mt-1">Save ₹397 • ₹57/day</p>
+                          <p className="text-sm text-emerald-700 font-semibold mt-1">Save ₹397 • ₹57/day</p>
                         </div>
                       </div>
                     </button>
                   </div>
 
                   {isProcessingBoost && (
-                    <div className="flex items-center justify-center gap-2 text-gray-600 py-6 mt-4">
-                      <Loader2 size={24} className="animate-spin text-orange-500" />
+                    <div className="flex items-center justify-center gap-2 text-gray-700 py-6 mt-4">
+                      <Loader2 size={24} className="animate-spin text-amber-700" />
                       <span className="font-semibold">Processing your boost...</span>
                     </div>
                   )}
 
                   {/* Trust Badge */}
-                  <div className="mt-8 bg-blue-50 border border-blue-200 rounded-2xl p-5">
+                  <div className="mt-8 bg-white border-2 border-emerald-200 rounded-2xl p-5 shadow-md">
                     <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center shrink-0">
+                      <div className="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center shrink-0">
                         <span className="text-white text-xl">💡</span>
                       </div>
                       <div>
                         <p className="font-bold text-gray-900 mb-1">Success Guarantee</p>
-                        <p className="text-sm text-gray-600">Properties with Boost get <strong>10x more inquiries</strong> and close <strong>3x faster</strong> than regular listings. Join 5,000+ successful sellers!</p>
+                        <p className="text-sm text-gray-700">Properties with Boost get <strong className="text-emerald-700">10x more inquiries</strong> and close <strong className="text-emerald-700">3x faster</strong> than regular listings. Join 5,000+ successful sellers!</p>
                       </div>
                     </div>
                   </div>
