@@ -39,6 +39,8 @@ export default function BecomePartner() {
 
   const [previewImage, setPreviewImage] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submittedData, setSubmittedData] = useState(null);
 
   const specializationOptions = [
     "Residential",
@@ -88,24 +90,213 @@ export default function BecomePartner() {
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     setIsSubmitting(false);
-    alert("Partner profile created successfully! Our team will verify and approve within 24-48 hours.");
+    setSubmittedData({
+      ...profileData,
+      submittedAt: new Date().toISOString(),
+      applicationId: `APP-${Date.now()}`,
+    });
+    setIsSubmitted(true);
+  };
+
+  const handleEditProfile = () => {
+    setIsSubmitted(false);
   };
 
   return (
     <div className="min-h-screen bg-[#F5F1E8] pb-16">
-      {/* PAGE HEADER */}
-      <div className="mb-8">
-        <div className="flex items-center gap-4 mb-4">
-          <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg">
-            <Shield className="text-white" size={32} />
+      {/* If submitted, show pending approval screen */}
+      {isSubmitted ? (
+        <>
+          {/* PAGE HEADER */}
+          <div className="mb-8">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl flex items-center justify-center shadow-lg">
+                <Clock className="text-white" size={32} />
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900">Application Submitted</h1>
+                <p className="text-gray-600 mt-1">
+                  Your partner profile is under review
+                </p>
+              </div>
+            </div>
           </div>
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Become a Partner</h1>
-            <p className="text-gray-600 mt-1">
-              Create your partner profile to connect with thousands of buyers and sellers
-            </p>
+
+          {/* PENDING APPROVAL CARD */}
+          <div className="bg-white rounded-3xl border-2 border-gray-200 shadow-lg overflow-hidden">
+            {/* Status Banner */}
+            <div className="bg-gradient-to-r from-amber-500 to-orange-500 p-6 text-white text-center">
+              <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 backdrop-blur-sm border-2 border-white/30">
+                <Clock size={40} />
+              </div>
+              <h2 className="text-2xl font-bold mb-2">Pending for Approval</h2>
+              <p className="text-amber-50 text-lg">
+                Your application is being reviewed by our team
+              </p>
+            </div>
+
+            <div className="p-8">
+              {/* Application Details */}
+              <div className="bg-gray-50 rounded-2xl p-6 mb-6 border-2 border-gray-100">
+                <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                  <CheckCircle2 size={20} className="text-emerald-600" />
+                  Application Details
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-xs text-gray-500 mb-1">Application ID</p>
+                    <p className="font-bold text-gray-900">{submittedData.applicationId}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500 mb-1">Submitted On</p>
+                    <p className="font-bold text-gray-900">
+                      {new Date(submittedData.submittedAt).toLocaleDateString("en-IN", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      })}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500 mb-1">Partner Type</p>
+                    <p className="font-bold text-gray-900">{submittedData.partnerType}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500 mb-1">Company Name</p>
+                    <p className="font-bold text-gray-900">{submittedData.company}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Profile Summary */}
+              <div className="bg-emerald-50 rounded-2xl p-6 mb-6 border-2 border-emerald-100">
+                <div className="flex items-start gap-4">
+                  <div className="w-20 h-20 rounded-2xl border-2 border-emerald-200 overflow-hidden bg-white shrink-0">
+                    {previewImage ? (
+                      <img src={previewImage} alt="Profile" className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <User size={32} className="text-gray-400" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold text-gray-900 mb-1">{submittedData.name}</h3>
+                    <p className="text-gray-600 mb-2">{submittedData.email}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {submittedData.specializations.map((spec) => (
+                        <span
+                          key={spec}
+                          className="text-xs bg-emerald-600 text-white px-3 py-1 rounded-full font-semibold"
+                        >
+                          {spec}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Timeline */}
+              <div className="mb-8">
+                <h3 className="font-bold text-gray-900 mb-4">Approval Timeline</h3>
+                <div className="space-y-4">
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-full bg-emerald-600 flex items-center justify-center shrink-0">
+                      <CheckCircle2 size={20} className="text-white" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-gray-900">Application Submitted</p>
+                      <p className="text-sm text-gray-600">
+                        {new Date(submittedData.submittedAt).toLocaleString("en-IN")}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-full bg-amber-500 flex items-center justify-center shrink-0">
+                      <Clock size={20} className="text-white" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-gray-900">Under Review</p>
+                      <p className="text-sm text-gray-600">Our team is verifying your details and documents</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center shrink-0">
+                      <CheckCircle2 size={20} className="text-white" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-gray-500">Approval Pending</p>
+                      <p className="text-sm text-gray-500">Expected within 24-48 hours</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Info Boxes */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl p-5">
+                  <div className="flex items-start gap-3">
+                    <div className="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center shrink-0">
+                      <Mail size={20} className="text-white" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-gray-900 mb-1">Check Your Email</p>
+                      <p className="text-sm text-gray-700">
+                        We'll send you updates about your application status
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-purple-50 border-2 border-purple-200 rounded-2xl p-5">
+                  <div className="flex items-start gap-3">
+                    <div className="w-10 h-10 bg-purple-500 rounded-xl flex items-center justify-center shrink-0">
+                      <Shield size={20} className="text-white" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-gray-900 mb-1">What's Next?</p>
+                      <p className="text-sm text-gray-700">
+                        Once approved, you'll get a verified badge on your profile
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t-2 border-gray-200">
+                <button
+                  onClick={handleEditProfile}
+                  className="flex-1 px-6 py-3 rounded-xl border-2 border-emerald-600 text-emerald-600 font-bold hover:bg-emerald-50 transition-all"
+                >
+                  Edit Application
+                </button>
+                <button className="flex-1 px-6 py-3 rounded-xl bg-gray-100 text-gray-600 font-bold hover:bg-gray-200 transition-all">
+                  Contact Support
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
+        </>
+      ) : (
+        // Original form content
+        <>
+          {/* PAGE HEADER */}
+          <div className="mb-8">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg">
+                <Shield className="text-white" size={32} />
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900">Become a Partner</h1>
+                <p className="text-gray-600 mt-1">
+                  Create your partner profile to connect with thousands of buyers and sellers
+                </p>
+              </div>
+            </div>
 
         {/* BENEFITS BANNER */}
         <div className="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl p-6 text-white shadow-lg">
@@ -385,6 +576,8 @@ export default function BecomePartner() {
           </div>
         </div>
       </form>
+      </>
+      )}
     </div>
   );
 }
