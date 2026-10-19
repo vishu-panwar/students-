@@ -91,7 +91,7 @@ export default function BecomePartner() {
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     setIsSubmitting(false);
-    setSubmittedData({
+    const approvedData = {
       ...profileData,
       submittedAt: new Date().toISOString(),
       applicationId: `APP-${Date.now()}`,
@@ -100,12 +100,16 @@ export default function BecomePartner() {
       rating: 0,
       reviews: 0,
       properties: 0,
-    });
+    };
+    
+    setSubmittedData(approvedData);
     setIsSubmitted(true);
     
     // Auto-approve after 3 seconds (temporary)
     setTimeout(() => {
       setIsApproved(true);
+      // Save to localStorage so it appears in "Verified Partners Near You"
+      localStorage.setItem("approvedPartner", JSON.stringify(approvedData));
     }, 3000);
   };
 
