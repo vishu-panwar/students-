@@ -29,7 +29,7 @@ import {
   filterMockListings, 
   updateMockListingStatus, 
   deleteMockListing 
-} from "../../data/mockListings";
+} from "@/data/mockListings";
 
 // =============================================
 // MAIN COMPONENT
