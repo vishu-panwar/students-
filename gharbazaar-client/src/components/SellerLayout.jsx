@@ -15,6 +15,7 @@ import {
   FileText,
   Loader2,
   Shield,
+  Handshake,
 } from "lucide-react";
 import axios from "axios";
 import { socket } from "../socket/socket";
@@ -33,6 +34,7 @@ export default function SellerLayout() {
     { path: "/seller/dashboard/property/listings", icon: Building2, label: "My Properties" },
     { path: "/seller/dashboard/property/leads", icon: Users, label: "Leads & Inquiries" },
     { path: "/seller/dashboard/property/bookings", icon: FileText, label: "Bookings" },
+    { path: "/seller/dashboard/property/become-partner", icon: Handshake, label: "Become a Partner" },
     { path: "/seller/dashboard/property/analytics", icon: BarChart, label: "Analytics" },
     { path: "/seller/dashboard/property/messages", icon: MessageSquare, label: "Messages" },
     { path: "/seller/dashboard/property/payments", icon: CreditCard, label: "Payments" },

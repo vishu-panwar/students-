@@ -84,6 +84,7 @@ const SellerMessages      = lazy(() => import("./pages/seller/SellerMessages"));
 const SellerPayments      = lazy(() => import("./pages/seller/SellerPayments"));
 const SellerKYC           = lazy(() => import("./pages/seller/SellerKYC"));
 const SellerSettings      = lazy(() => import("./pages/seller/SellerSettings"));
+const BecomePartner       = lazy(() => import("./pages/dashboard/BecomePartner"));
 const ServiceDashboard    = lazy(() => import("./pages/seller/ServiceDashboard"));
 const ProductDashboard    = lazy(() => import("./pages/seller/ProductDashboard"));
 
@@ -242,6 +243,7 @@ export default function AppContent() {
               <Route path="property/listings"              element={<MyListings />} />
               <Route path="property/leads"                 element={<SellerLeads />} />
               <Route path="property/bookings"              element={<SellerBookings />} />
+              <Route path="property/become-partner"        element={<BecomePartner />} />
               <Route path="property/analytics"             element={<SellerAnalytics />} />
               <Route path="property/messages"              element={<SellerMessages />} />
               <Route path="property/payments"              element={<SellerPayments />} />
