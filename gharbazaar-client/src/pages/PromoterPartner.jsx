@@ -1,445 +1,500 @@
-import { useState } from "react";
-import {
-  Briefcase,
-  TrendingUp,
-  Users,
-  DollarSign,
-  Award,
+import { useState, useEffect } from "react";
+import { 
+  TrendingUp, 
+  Users, 
+  Target, 
+  DollarSign, 
+  Phone, 
+  Calendar,
   Clock,
-  MapPin,
-  Phone,
-  Mail,
-  CheckCircle2,
-  Target,
-  Zap,
-  Gift,
-  Star,
-  Building2,
-  ArrowRight,
+  CheckCircle,
+  AlertCircle,
+  User,
+  LogOut,
+  Bell,
+  Eye,
+  Home
 } from "lucide-react";
-
-const jobRoles = [
-  {
-    id: 1,
-    title: "Inbound Sales Executive",
-    type: "Inbound",
-    employmentType: "Full Time",
-    salaryType: "Fixed Salary + Incentives",
-    salary: "₹20,000 - ₹30,000/month",
-    incentives: "Up to ₹15,000/month",
-    location: "Delhi NCR",
-    experience: "0-2 years",
-    openings: 10,
-    description: "Handle incoming leads and convert them into successful property deals. Perfect for freshers with good communication skills.",
-    responsibilities: [
-      "Handle incoming calls and inquiries",
-      "Understand customer requirements",
-      "Pitch relevant properties",
-      "Close deals and achieve targets",
-      "Maintain customer database",
-    ],
-    requirements: [
-      "Excellent communication skills",
-      "Basic computer knowledge",
-      "Target-oriented mindset",
-      "Fluent in Hindi & English",
-    ],
-    benefits: [
-      "Fixed monthly salary",
-      "Performance-based incentives",
-      "Training provided",
-      "Career growth opportunities",
-    ],
-  },
-  {
-    id: 2,
-    title: "Outbound Sales Executive",
-    type: "Outbound",
-    employmentType: "Full Time",
-    salaryType: "Fixed Salary + Incentives",
-    salary: "₹18,000 - ₹25,000/month",
-    incentives: "Up to ₹20,000/month",
-    location: "Delhi NCR",
-    experience: "0-3 years",
-    openings: 15,
-    description: "Reach out to potential customers, generate leads, and close property deals. High earning potential through incentives.",
-    responsibilities: [
-      "Make outbound calls to prospects",
-      "Generate new leads",
-      "Schedule property visits",
-      "Follow up with customers",
-      "Achieve monthly sales targets",
-    ],
-    requirements: [
-      "Strong persuasion skills",
-      "Confident communication",
-      "Self-motivated",
-      "Good negotiation abilities",
-    ],
-    benefits: [
-      "Attractive incentive structure",
-      "Fixed base salary",
-      "Weekly/Monthly rewards",
-      "Fast-track promotions",
-    ],
-  },
-  {
-    id: 3,
-    title: "Sales Manager",
-    type: "Sales",
-    employmentType: "Full Time",
-    salaryType: "Fixed Salary + Performance Bonus",
-    salary: "₹35,000 - ₹50,000/month",
-    incentives: "Up to ₹30,000/month",
-    location: "Delhi NCR",
-    experience: "2-5 years",
-    openings: 5,
-    description: "Lead a team of sales executives, manage operations, and drive revenue growth. Leadership role with high earning potential.",
-    responsibilities: [
-      "Manage sales team performance",
-      "Set and achieve team targets",
-      "Train and mentor executives",
-      "Handle key client relationships",
-      "Report to senior management",
-    ],
-    requirements: [
-      "Proven sales experience",
-      "Team management skills",
-      "Strong leadership abilities",
-      "Real estate knowledge preferred",
-    ],
-    benefits: [
-      "Leadership position",
-      "Performance bonuses",
-      "Team incentives",
-      "Career advancement",
-    ],
-  },
-  {
-    id: 4,
-    title: "Business Development Executive",
-    type: "Sales",
-    employmentType: "Full Time",
-    salaryType: "Incentive Based",
-    salary: "No fixed salary",
-    incentives: "₹5,000 - ₹50,000 per deal",
-    location: "Work from anywhere",
-    experience: "Any",
-    openings: 50,
-    description: "Pure commission-based role with unlimited earning potential. Close property deals and earn high commissions.",
-    responsibilities: [
-      "Generate and convert leads",
-      "Close property transactions",
-      "Build client relationships",
-      "Achieve sales targets",
-      "Independent work",
-    ],
-    requirements: [
-      "Self-motivated hustler",
-      "Strong sales mindset",
-      "Network building skills",
-      "Flexibility and determination",
-    ],
-    benefits: [
-      "Unlimited earnings",
-      "Work flexibility",
-      "No salary cap",
-      "Performance recognition",
-    ],
-  },
-];
+import { Link } from "react-router-dom";
 
 export default function PromoterPartner() {
-  const [selectedType, setSelectedType] = useState("All");
-  const [selectedJob, setSelectedJob] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [salesPerson, setSalesPerson] = useState(null);
+  const [loginData, setLoginData] = useState({ email: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
 
-  const filteredJobs = selectedType === "All" 
-    ? jobRoles 
-    : jobRoles.filter((job) => job.type === selectedType);
+  const [stats, setStats] = useState({
+    totalLeads: 45,
+    convertedLeads: 12,
+    pendingFollowups: 8,
+    revenue: 185000,
+    callsMade: 156,
+    meetingsScheduled: 23
+  });
 
+  const [recentActivities, setRecentActivities] = useState([
+    {
+      id: 1,
+      type: "call",
+      title: "Called Client - Rajesh Kumar",
+      description: "Interested in 3BHK Apartment in Noida",
+      time: "2 hours ago",
+      status: "completed"
+    },
+    {
+      id: 2,
+      type: "meeting",
+      title: "Site Visit Scheduled",
+      description: "Mr. Sharma - DLF Garden City",
+      time: "5 hours ago",
+      status: "scheduled"
+    },
+    {
+      id: 3,
+      type: "conversion",
+      title: "Lead Converted",
+      description: "₹1,50,000 commission earned",
+      time: "1 day ago",
+      status: "success"
+    },
+    {
+      id: 4,
+      type: "followup",
+      title: "Follow-up Pending",
+      description: "Ms. Priya - 2BHK Flat inquiry",
+      time: "2 days ago",
+      status: "pending"
+    }
+  ]);
+
+  const [leadsData, setLeadsData] = useState([
+    {
+      id: 1,
+      name: "Amit Verma",
+      phone: "+91 98765 43210",
+      property: "3BHK Apartment, Sector 62",
+      budget: "₹75L - ₹85L",
+      status: "hot",
+      lastContact: "Today, 2:30 PM",
+      nextFollowup: "Tomorrow, 11:00 AM"
+    },
+    {
+      id: 2,
+      name: "Neha Gupta",
+      phone: "+91 87654 32109",
+      property: "2BHK Flat, Greater Noida",
+      budget: "₹45L - ₹55L",
+      status: "warm",
+      lastContact: "Yesterday, 4:15 PM",
+      nextFollowup: "In 2 days, 3:00 PM"
+    },
+    {
+      id: 3,
+      name: "Rahul Sharma",
+      phone: "+91 76543 21098",
+      property: "Villa, Noida Extension",
+      budget: "₹1.2Cr - ₹1.5Cr",
+      status: "hot",
+      lastContact: "Today, 10:00 AM",
+      nextFollowup: "Today, 5:00 PM"
+    },
+    {
+      id: 4,
+      name: "Pooja Singh",
+      phone: "+91 65432 10987",
+      property: "1BHK Studio, Sector 18",
+      budget: "₹25L - ₹30L",
+      status: "cold",
+      lastContact: "3 days ago",
+      nextFollowup: "Next week"
+    }
+  ]);
+
+  useEffect(() => {
+    // Check if sales person is logged in
+    const salesData = localStorage.getItem("salesUser");
+    if (salesData) {
+      setSalesPerson(JSON.parse(salesData));
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    
+    // Demo credentials
+    if (loginData.email === "sales@gharbazaar.com" && loginData.password === "sales123") {
+      const salesUser = {
+        name: "Vishu Panwar",
+        email: loginData.email,
+        role: "Sales Executive",
+        phone: "+91 9876543210",
+        employeeId: "GBS001"
+      };
+      
+      localStorage.setItem("salesUser", JSON.stringify(salesUser));
+      setSalesPerson(salesUser);
+      setIsLoggedIn(true);
+    } else {
+      alert("Invalid credentials! Use: sales@gharbazaar.com / sales123");
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("salesUser");
+    setSalesPerson(null);
+    setIsLoggedIn(false);
+  };
+
+  const conversionRate = stats.totalLeads > 0 
+    ? ((stats.convertedLeads / stats.totalLeads) * 100).toFixed(1)
+    : 0;
+
+  const getStatusColor = (status) => {
+    switch(status) {
+      case 'hot': return 'bg-red-100 text-red-700 border-red-300';
+      case 'warm': return 'bg-orange-100 text-orange-700 border-orange-300';
+      case 'cold': return 'bg-blue-100 text-blue-700 border-blue-300';
+      default: return 'bg-gray-100 text-gray-700 border-gray-300';
+    }
+  };
+
+  const getActivityIcon = (type) => {
+    if (type === 'call') return <Phone className="w-4 h-4" />;
+    if (type === 'meeting') return <Calendar className="w-4 h-4" />;
+    if (type === 'conversion') return <CheckCircle className="w-4 h-4" />;
+    if (type === 'followup') return <AlertCircle className="w-4 h-4" />;
+    return <Clock className="w-4 h-4" />;
+  };
+
+  const getActivityStatusColor = (status) => {
+    switch(status) {
+      case 'completed': return 'bg-green-50 border-green-200';
+      case 'scheduled': return 'bg-blue-50 border-blue-200';
+      case 'success': return 'bg-emerald-50 border-emerald-200';
+      case 'pending': return 'bg-orange-50 border-orange-200';
+      default: return 'bg-gray-50 border-gray-200';
+    }
+  };
+
+  // Login Page
+  if (!isLoggedIn) {
+    return (
+      <div className="min-h-screen bg-[#F5F1E8] flex items-center justify-center p-4">
+        <div className="w-full max-w-md">
+          {/* Logo & Title */}
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-emerald-600 rounded-2xl mb-4">
+              <TrendingUp className="w-8 h-8 text-white" />
+            </div>
+            <h1 className="text-3xl font-bold text-gray-900">Sales Portal</h1>
+            <p className="text-gray-600 mt-2">Sign in to access your dashboard</p>
+          </div>
+
+          {/* Login Form */}
+          <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
+            <form onSubmit={handleLogin} className="space-y-6">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  value={loginData.email}
+                  onChange={(e) => setLoginData({...loginData, email: e.target.value})}
+                  placeholder="sales@gharbazaar.com"
+                  required
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-emerald-500 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={loginData.password}
+                    onChange={(e) => setLoginData({...loginData, password: e.target.value})}
+                    placeholder="Enter password"
+                    required
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-emerald-500 focus:outline-none pr-12"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500"
+                  >
+                    <Eye className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-700 transition-colors"
+              >
+                Sign In
+              </button>
+            </form>
+
+            {/* Demo Credentials */}
+            <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <p className="text-xs font-semibold text-blue-900 mb-2">Demo Credentials:</p>
+              <p className="text-xs text-blue-800">Email: sales@gharbazaar.com</p>
+              <p className="text-xs text-blue-800">Password: sales123</p>
+            </div>
+
+            <div className="mt-6 text-center">
+              <Link to="/" className="text-sm text-gray-600 hover:text-emerald-600 inline-flex items-center gap-1">
+                <Home className="w-4 h-4" />
+                Back to Home
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Sales Dashboard
   return (
-    <div className="min-h-screen bg-[#F5F1E8] pt-20 pb-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* HERO SECTION */}
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center mb-6">
-            <div className="w-20 h-20 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl flex items-center justify-center shadow-xl">
-              <Briefcase className="text-white" size={40} />
+    <div className="min-h-screen bg-[#F5F1E8]">
+      {/* Top Navigation */}
+      <nav className="bg-white border-b border-gray-200 sticky top-0 z-30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center">
+                  <span className="text-white font-bold">G</span>
+                </div>
+                <div className="hidden sm:block">
+                  <h1 className="text-lg font-bold text-gray-900">GharBazaar</h1>
+                  <p className="text-xs text-gray-600">Sales Portal</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <button className="relative p-2 rounded-lg hover:bg-gray-100">
+                <Bell className="w-5 h-5 text-gray-600" />
+                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+              </button>
+              <div className="flex items-center gap-3 pl-4 border-l border-gray-200">
+                <div className="hidden sm:block text-right">
+                  <p className="text-sm font-semibold">{salesPerson?.name}</p>
+                  <p className="text-xs text-gray-600">{salesPerson?.role}</p>
+                </div>
+                <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center">
+                  <User className="w-5 h-5 text-emerald-600" />
+                </div>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                title="Logout"
+              >
+                <LogOut className="w-5 h-5" />
+              </button>
             </div>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Become a Promoter Partner
-          </h1>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
-            Join India's fastest-growing real estate platform. Earn high incentives, work flexibly, 
-            and grow your career with GharBazaar.
-          </p>
+        </div>
+      </nav>
 
-          {/* STATS */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-            <div className="bg-white rounded-2xl p-6 border-2 border-emerald-200 shadow-md">
-              <p className="text-3xl font-bold text-emerald-600">80+</p>
-              <p className="text-sm text-gray-600 mt-1">Open Positions</p>
+      {/* Header */}
+      <div className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex items-center justify-between flex-wrap gap-4">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">
+                Good Afternoon, {salesPerson?.name}!
+              </h1>
+              <p className="mt-1 text-sm text-gray-600">
+                Track your performance and manage leads
+              </p>
             </div>
-            <div className="bg-white rounded-2xl p-6 border-2 border-blue-200 shadow-md">
-              <p className="text-3xl font-bold text-blue-600">₹50k+</p>
-              <p className="text-sm text-gray-600 mt-1">Avg Monthly Earning</p>
+            <div className="flex items-center gap-3">
+              <button className="px-4 py-2 bg-white border-2 border-emerald-600 text-emerald-600 rounded-lg hover:bg-emerald-50 transition-colors font-medium">
+                View Target
+              </button>
+              <button className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors font-medium">
+                Add New Lead
+              </button>
             </div>
-            <div className="bg-white rounded-2xl p-6 border-2 border-amber-200 shadow-md">
-              <p className="text-3xl font-bold text-amber-600">500+</p>
-              <p className="text-sm text-gray-600 mt-1">Active Partners</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Total Leads</p>
+                <p className="text-3xl font-bold text-gray-900 mt-2">{stats.totalLeads}</p>
+                <p className="text-sm text-emerald-600 mt-1">+12% from last month</p>
+              </div>
+              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                <Users className="w-6 h-6 text-blue-600" />
+              </div>
             </div>
-            <div className="bg-white rounded-2xl p-6 border-2 border-purple-200 shadow-md">
-              <p className="text-3xl font-bold text-purple-600">4.8★</p>
-              <p className="text-sm text-gray-600 mt-1">Employee Rating</p>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Converted Leads</p>
+                <p className="text-3xl font-bold text-gray-900 mt-2">{stats.convertedLeads}</p>
+                <p className="text-sm text-emerald-600 mt-1">{conversionRate}% conversion rate</p>
+              </div>
+              <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center">
+                <CheckCircle className="w-6 h-6 text-emerald-600" />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Total Revenue</p>
+                <p className="text-3xl font-bold text-gray-900 mt-2">₹{(stats.revenue / 1000).toFixed(0)}K</p>
+                <p className="text-sm text-emerald-600 mt-1">₹45K this week</p>
+              </div>
+              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                <DollarSign className="w-6 h-6 text-purple-600" />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Calls Made</p>
+                <p className="text-3xl font-bold text-gray-900 mt-2">{stats.callsMade}</p>
+                <p className="text-sm text-gray-500 mt-1">This month</p>
+              </div>
+              <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                <Phone className="w-6 h-6 text-orange-600" />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Meetings Scheduled</p>
+                <p className="text-3xl font-bold text-gray-900 mt-2">{stats.meetingsScheduled}</p>
+                <p className="text-sm text-gray-500 mt-1">8 this week</p>
+              </div>
+              <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                <Calendar className="w-6 h-6 text-indigo-600" />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Pending Follow-ups</p>
+                <p className="text-3xl font-bold text-gray-900 mt-2">{stats.pendingFollowups}</p>
+                <p className="text-sm text-orange-600 mt-1">Needs attention</p>
+              </div>
+              <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                <AlertCircle className="w-6 h-6 text-red-600" />
+              </div>
             </div>
           </div>
         </div>
 
-        {/* BENEFITS SECTION */}
-        <div className="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-3xl p-8 mb-12 text-white shadow-xl">
-          <h2 className="text-2xl font-bold mb-6 text-center">Why Join Us?</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center shrink-0 backdrop-blur-sm">
-                <DollarSign size={24} />
-              </div>
-              <div>
-                <p className="font-bold text-lg mb-1">High Earnings</p>
-                <p className="text-emerald-50 text-sm">Earn up to ₹50,000+ per month with incentives</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center shrink-0 backdrop-blur-sm">
-                <TrendingUp size={24} />
-              </div>
-              <div>
-                <p className="font-bold text-lg mb-1">Career Growth</p>
-                <p className="text-emerald-50 text-sm">Fast-track promotions and leadership roles</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center shrink-0 backdrop-blur-sm">
-                <Award size={24} />
-              </div>
-              <div>
-                <p className="font-bold text-lg mb-1">Recognition</p>
-                <p className="text-emerald-50 text-sm">Monthly rewards and top performer benefits</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* FILTER TABS */}
-        <div className="flex items-center justify-center gap-3 mb-8 flex-wrap">
-          {["All", "Inbound", "Outbound", "Sales"].map((type) => (
-            <button
-              key={type}
-              onClick={() => setSelectedType(type)}
-              className={`px-6 py-3 rounded-xl font-semibold transition-all ${
-                selectedType === type
-                  ? "bg-emerald-600 text-white shadow-lg"
-                  : "bg-white text-gray-700 border-2 border-gray-200 hover:border-emerald-400"
-              }`}
-            >
-              {type}
-            </button>
-          ))}
-        </div>
-
-        {/* JOB CARDS */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-          {filteredJobs.map((job) => (
-            <div
-              key={job.id}
-              className="bg-white rounded-3xl border-2 border-gray-200 shadow-lg hover:shadow-xl transition-all overflow-hidden"
-            >
-              {/* Header */}
-              <div className="bg-gradient-to-r from-emerald-50 to-teal-50 p-6 border-b-2 border-gray-200">
-                <div className="flex items-start justify-between mb-3">
-                  <div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2">{job.title}</h3>
-                    <div className="flex items-center gap-2">
-                      <span className="px-3 py-1 bg-emerald-600 text-white text-xs font-bold rounded-full">
-                        {job.type}
-                      </span>
-                      <span className="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-bold rounded-full border border-blue-200">
-                        {job.employmentType}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm text-gray-600">Openings</p>
-                    <p className="text-3xl font-bold text-emerald-600">{job.openings}</p>
-                  </div>
-                </div>
-                <p className="text-gray-700 text-sm">{job.description}</p>
-              </div>
-
-              {/* Body */}
-              <div className="p-6">
-                {/* Salary & Incentives */}
-                <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
-                    <p className="text-xs text-gray-600 mb-1">Base Salary</p>
-                    <p className="font-bold text-gray-900">{job.salary}</p>
-                  </div>
-                  <div className="bg-emerald-50 rounded-xl p-4 border border-emerald-200">
-                    <p className="text-xs text-emerald-700 mb-1">Incentives</p>
-                    <p className="font-bold text-emerald-600">{job.incentives}</p>
-                  </div>
-                </div>
-
-                {/* Details */}
-                <div className="space-y-3 mb-6">
-                  <div className="flex items-center gap-3 text-sm text-gray-600">
-                    <MapPin size={16} className="text-gray-400" />
-                    <span>{job.location}</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm text-gray-600">
-                    <Clock size={16} className="text-gray-400" />
-                    <span>Experience: {job.experience}</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm text-gray-600">
-                    <Award size={16} className="text-gray-400" />
-                    <span>{job.salaryType}</span>
-                  </div>
-                </div>
-
-                {/* CTA Button */}
-                <button
-                  onClick={() => setSelectedJob(job)}
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
-                >
-                  View Details & Apply
-                  <ArrowRight size={18} />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* My Leads */}
+          <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200">
+            <div className="p-6 border-b border-gray-200">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-bold text-gray-900">My Active Leads</h2>
+                <button className="text-sm text-emerald-600 hover:text-emerald-700 font-medium">
+                  View All
                 </button>
               </div>
             </div>
-          ))}
-        </div>
-
-        {/* CONTACT CTA */}
-        <div className="bg-white rounded-3xl border-2 border-gray-200 p-8 text-center shadow-lg">
-          <h3 className="text-2xl font-bold text-gray-900 mb-4">Ready to Start Earning?</h3>
-          <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-            Join our team today and start your journey towards a rewarding career in real estate.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href="tel:+919876543210"
-              className="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition-all shadow-md flex items-center gap-2"
-            >
-              <Phone size={20} />
-              Call: +91 98765 43210
-            </a>
-            <a
-              href="mailto:careers@gharbazaar.com"
-              className="px-8 py-3 border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-50 font-bold rounded-xl transition-all flex items-center gap-2"
-            >
-              <Mail size={20} />
-              careers@gharbazaar.com
-            </a>
-          </div>
-        </div>
-
-      </div>
-
-      {/* JOB DETAILS MODAL */}
-      {selectedJob && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto">
-          <div className="bg-white rounded-3xl max-w-3xl w-full shadow-2xl border-2 border-gray-200 my-8">
-            {/* Modal Header */}
-            <div className="bg-gradient-to-r from-emerald-500 to-teal-600 p-6 text-white relative">
-              <button
-                onClick={() => setSelectedJob(null)}
-                className="absolute top-4 right-4 p-2 bg-white/20 hover:bg-white/30 rounded-full transition"
-              >
-                <ArrowRight size={20} className="rotate-180" />
-              </button>
-              <h2 className="text-3xl font-bold mb-2">{selectedJob.title}</h2>
-              <p className="text-emerald-50">{selectedJob.employmentType} • {selectedJob.location}</p>
-            </div>
-
-            {/* Modal Body */}
-            <div className="p-6 space-y-6">
-              {/* Salary Info */}
-              <div className="bg-emerald-50 rounded-2xl p-5 border-2 border-emerald-200">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-sm text-gray-600 mb-1">Base Salary</p>
-                    <p className="text-xl font-bold text-gray-900">{selectedJob.salary}</p>
+            <div className="divide-y divide-gray-200">
+              {leadsData.map((lead) => (
+                <div key={lead.id} className="p-6 hover:bg-gray-50 transition-colors">
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <h3 className="font-semibold text-gray-900">{lead.name}</h3>
+                      <p className="text-sm text-gray-600 mt-1">{lead.phone}</p>
+                    </div>
+                    <span className={`px-3 py-1 rounded-full text-xs font-semibold border uppercase ${getStatusColor(lead.status)}`}>
+                      {lead.status}
+                    </span>
                   </div>
-                  <div>
-                    <p className="text-sm text-emerald-700 mb-1">Incentives</p>
-                    <p className="text-xl font-bold text-emerald-600">{selectedJob.incentives}</p>
+                  <div className="space-y-2 mb-3">
+                    <p className="text-sm text-gray-700">
+                      <span className="font-medium">Property:</span> {lead.property}
+                    </p>
+                    <p className="text-sm text-gray-700">
+                      <span className="font-medium">Budget:</span> {lead.budget}
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                    <div className="text-xs text-gray-500">
+                      <span className="font-medium">Last Contact:</span> {lead.lastContact}
+                    </div>
+                    <button className="px-4 py-2 bg-emerald-600 text-white text-sm rounded-lg hover:bg-emerald-700 transition-colors font-medium">
+                      Follow Up
+                    </button>
+                  </div>
+                  <div className="text-xs text-orange-600 mt-2">
+                    <Clock className="w-3 h-3 inline mr-1" />
+                    Next Follow-up: {lead.nextFollowup}
                   </div>
                 </div>
-              </div>
+              ))}
+            </div>
+          </div>
 
-              {/* Responsibilities */}
-              <div>
-                <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
-                  <CheckCircle2 size={20} className="text-emerald-600" />
-                  Responsibilities
-                </h3>
-                <ul className="space-y-2">
-                  {selectedJob.responsibilities.map((item, index) => (
-                    <li key={index} className="flex items-start gap-2 text-gray-700">
-                      <span className="text-emerald-600 mt-1">•</span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Requirements */}
-              <div>
-                <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
-                  <Star size={20} className="text-amber-500" />
-                  Requirements
-                </h3>
-                <ul className="space-y-2">
-                  {selectedJob.requirements.map((item, index) => (
-                    <li key={index} className="flex items-start gap-2 text-gray-700">
-                      <span className="text-amber-500 mt-1">•</span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Benefits */}
-              <div>
-                <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
-                  <Gift size={20} className="text-purple-600" />
-                  Benefits
-                </h3>
-                <ul className="space-y-2">
-                  {selectedJob.benefits.map((item, index) => (
-                    <li key={index} className="flex items-start gap-2 text-gray-700">
-                      <span className="text-purple-600 mt-1">•</span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Apply Button */}
-              <div className="pt-6 border-t-2 border-gray-200">
-                <a
-                  href={`mailto:careers@gharbazaar.com?subject=Application for ${selectedJob.title}&body=Hi, I am interested in applying for the ${selectedJob.title} position.`}
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-xl transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+          {/* Recent Activities */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+            <div className="p-6 border-b border-gray-200">
+              <h2 className="text-xl font-bold text-gray-900">Recent Activities</h2>
+            </div>
+            <div className="p-4 space-y-3 max-h-[600px] overflow-y-auto">
+              {recentActivities.map((activity) => (
+                <div 
+                  key={activity.id} 
+                  className={`p-4 rounded-lg border ${getActivityStatusColor(activity.status)}`}
                 >
-                  <Mail size={20} />
-                  Apply Now via Email
-                </a>
-              </div>
+                  <div className="flex items-start gap-3">
+                    <div className={`mt-1 ${
+                      activity.status === 'success' ? 'text-emerald-600' :
+                      activity.status === 'scheduled' ? 'text-blue-600' :
+                      activity.status === 'pending' ? 'text-orange-600' :
+                      'text-green-600'
+                    }`}>
+                      {getActivityIcon(activity.type)}
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-sm font-semibold text-gray-900">
+                        {activity.title}
+                      </h3>
+                      <p className="text-xs text-gray-600 mt-1">
+                        {activity.description}
+                      </p>
+                      <p className="text-xs text-gray-500 mt-2">
+                        {activity.time}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }

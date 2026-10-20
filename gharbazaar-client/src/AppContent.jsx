@@ -57,6 +57,11 @@ const CategoriesPage         = lazy(() => import("./pages/properties/CategoriesP
 const NotFoundPage           = lazy(() => import("./pages/Not Found/Not404"));
 const PromoterPartner        = lazy(() => import("./pages/PromoterPartner"));
 
+/* ───────── SALES ───────── */
+const SalesLogin             = lazy(() => import("./pages/salesDashboard/SalesLogin"));
+const SalesLayout            = lazy(() => import("./pages/salesDashboard/SalesLayout"));
+const SalesDashboard         = lazy(() => import("./pages/salesDashboard/SalesDashboard"));
+
 /* ───────── USER DASHBOARD ───────── */
 const DashboardLayout    = lazy(() => import("./pages/dashboard/DashboardLayout"));
 const Dashboard          = lazy(() => import("./pages/dashboard/dashboard/Dashboard"));
