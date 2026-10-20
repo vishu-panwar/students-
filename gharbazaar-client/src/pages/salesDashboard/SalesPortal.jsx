@@ -34,6 +34,7 @@ import LeadManagement from "./sections/LeadManagement";
 import VisitSchedule from "./sections/VisitSchedule";
 import Reports from "./sections/Reports";
 import SettingsPage from "./sections/Settings";
+import Dashboard from "./sections/Dashboard";
 
 export default function SalesPortal() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -278,7 +279,7 @@ export default function SalesPortal() {
   // Section Renderer
   const renderSection = () => {
     switch(activeSection) {
-      case "dashboard": return <DashboardContent />;
+      case "dashboard": return <Dashboard salesPerson={salesPerson} />;
       case "inbound": return <InboundCalls />;
       case "outbound": return <OutboundCalls />;
       case "sales": return <SalesTracking />;
@@ -288,7 +289,7 @@ export default function SalesPortal() {
       case "schedule": return <VisitSchedule />;
       case "reports": return <Reports />;
       case "settings": return <SettingsPage />;
-      default: return <DashboardContent />;
+      default: return <Dashboard salesPerson={salesPerson} />;
     }
   };
 
