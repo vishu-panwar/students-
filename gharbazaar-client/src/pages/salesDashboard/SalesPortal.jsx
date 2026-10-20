@@ -25,6 +25,16 @@ import {
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
+import InboundCalls from "./sections/InboundCalls";
+import OutboundCalls from "./sections/OutboundCalls";
+import SalesTracking from "./sections/SalesTracking";
+import TargetsGoals from "./sections/TargetsGoals";
+import DiscountManagement from "./sections/DiscountManagement";
+import LeadManagement from "./sections/LeadManagement";
+import VisitSchedule from "./sections/VisitSchedule";
+import Reports from "./sections/Reports";
+import Settings from "./sections/Settings";
+
 export default function SalesPortal() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [salesPerson, setSalesPerson] = useState(null);
@@ -269,15 +279,15 @@ export default function SalesPortal() {
   const renderSection = () => {
     switch(activeSection) {
       case "dashboard": return <DashboardContent />;
-      case "inbound": return <div className="text-2xl font-bold">Inbound Calls Section - Coming Soon</div>;
-      case "outbound": return <div className="text-2xl font-bold">Outbound Calls Section - Coming Soon</div>;
-      case "sales": return <div className="text-2xl font-bold">Sales Tracking Section - Coming Soon</div>;
-      case "targets": return <div className="text-2xl font-bold">Targets & Goals Section - Coming Soon</div>;
-      case "discounts": return <div className="text-2xl font-bold">Discount Management - Coming Soon</div>;
-      case "leads": return <div className="text-2xl font-bold">Lead Management - Coming Soon</div>;
-      case "schedule": return <div className="text-2xl font-bold">Visit Schedule - Coming Soon</div>;
-      case "reports": return <div className="text-2xl font-bold">Reports Section - Coming Soon</div>;
-      case "settings": return <div className="text-2xl font-bold">Settings - Coming Soon</div>;
+      case "inbound": return <InboundCalls />;
+      case "outbound": return <OutboundCalls />;
+      case "sales": return <SalesTracking />;
+      case "targets": return <TargetsGoals />;
+      case "discounts": return <DiscountManagement />;
+      case "leads": return <LeadManagement />;
+      case "schedule": return <VisitSchedule />;
+      case "reports": return <Reports />;
+      case "settings": return <Settings />;
       default: return <DashboardContent />;
     }
   };
