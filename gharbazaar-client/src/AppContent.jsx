@@ -125,7 +125,8 @@ export default function AppContent() {
       location.pathname.startsWith("/dashboard") ||
       location.pathname.startsWith("/seller/dashboard") ||
       location.pathname.startsWith("/employee") ||
-      location.pathname.startsWith("/admin"),
+      location.pathname.startsWith("/admin") ||
+      location.pathname.startsWith("/promoter-partner"),
     [location.pathname],
   );
 
