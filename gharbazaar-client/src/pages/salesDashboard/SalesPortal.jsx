@@ -9,7 +9,7 @@ import {
   Users,
   Calendar,
   FileText,
-  Settings,
+  Settings as SettingsIcon,
   LogOut,
   Bell,
   Search,
@@ -33,7 +33,7 @@ import DiscountManagement from "./sections/DiscountManagement";
 import LeadManagement from "./sections/LeadManagement";
 import VisitSchedule from "./sections/VisitSchedule";
 import Reports from "./sections/Reports";
-import Settings from "./sections/Settings";
+import SettingsPage from "./sections/Settings";
 
 export default function SalesPortal() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -86,7 +86,7 @@ export default function SalesPortal() {
     { id: "leads", icon: Users, label: "Lead Management", color: "indigo" },
     { id: "schedule", icon: Calendar, label: "Visit Schedule", color: "pink" },
     { id: "reports", icon: FileText, label: "Reports", color: "cyan" },
-    { id: "settings", icon: Settings, label: "Settings", color: "gray" }
+    { id: "settings", icon: SettingsIcon, label: "Settings", color: "gray" }
   ];
 
   // Login Page
@@ -287,7 +287,7 @@ export default function SalesPortal() {
       case "leads": return <LeadManagement />;
       case "schedule": return <VisitSchedule />;
       case "reports": return <Reports />;
-      case "settings": return <Settings />;
+      case "settings": return <SettingsPage />;
       default: return <DashboardContent />;
     }
   };
