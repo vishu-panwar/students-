@@ -28,6 +28,7 @@ const NAV_LINKS = [
   { label: "Marketplace",  path: "/marketplace",icon: ShoppingBag },
   { label: "Pricing",      path: "/pricing",    icon: DollarSign },
   { label: "Refer & Earn", path: "/refer",      icon: Gift },
+  { label: "Promoter Partner", path: "/promoter-partner", icon: Briefcase },
   { label: "About",        path: "/about",      icon: Info },
   { label: "Contact",      path: "/contact",    icon: Phone },
 ];

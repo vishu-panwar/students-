@@ -55,6 +55,7 @@ const CallPlans              = lazy(() => import("./pages/CallPlans"));
 const ReferEarn              = lazy(() => import("./pages/ReferEarn"));
 const CategoriesPage         = lazy(() => import("./pages/properties/CategoriesPage"));
 const NotFoundPage           = lazy(() => import("./pages/Not Found/Not404"));
+const PromoterPartner        = lazy(() => import("./pages/PromoterPartner"));
 
 /* ───────── USER DASHBOARD ───────── */
 const DashboardLayout    = lazy(() => import("./pages/dashboard/DashboardLayout"));
@@ -211,6 +212,7 @@ export default function AppContent() {
           <Route path="/luxury-homes"            element={<LuxuryHomes />} />
           <Route path="/call-plans"              element={<CallPlans />} />
           <Route path="/refer"                   element={<ReferEarn />} />
+          <Route path="/promoter-partner"        element={<PromoterPartner />} />
 
           {/* ── USER DASHBOARD ── */}
           <Route element={<ProtectedRoute allowedRoles={["client", "admin"]} />}>
