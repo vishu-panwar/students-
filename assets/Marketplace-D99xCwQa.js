@@ -1,0 +1,1 @@
+import{o as e,t}from"./react-DnNpwOYT.js";import{t as n}from"./ComingSoonModal-yczkeRvA.js";import{t as r}from"./jsx-runtime-BxgSNiUh.js";import{c as i}from"./chunk-OE4NN4TA-FQKjeqDT.js";var a=e(t(),1),o=r(),s=()=>{let[e,t]=(0,a.useState)(!0),r=i();return(0,o.jsx)(`div`,{children:(0,o.jsx)(n,{isOpen:e,onClose:()=>{t(!1),r(-1)},serviceName:`Marketplace`})})};export{s as default};

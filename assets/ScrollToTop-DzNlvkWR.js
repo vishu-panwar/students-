@@ -1,0 +1,1 @@
+import{o as e,t}from"./react-DnNpwOYT.js";import{s as n}from"./chunk-OE4NN4TA-FQKjeqDT.js";var r=e(t(),1);function i(){let{pathname:e}=n();return(0,r.useEffect)(()=>{window.scrollTo({top:0,left:0,behavior:`instant`})},[e]),null}export{i as default};

@@ -1,0 +1,8 @@
+build:
+  working_directory: gharbazaar-client
+  nodejs:
+    version: "20"
+  build_commands:
+    - npm install
+    - npm run build
+  publish_directory: gharbazaar-client/dist

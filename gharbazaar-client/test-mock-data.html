@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Mock Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .property {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .property h3 {
+            margin: 0 0 10px 0;
+            color: #1B9E4B;
+        }
+        .property p {
+            margin: 5px 0;
+            color: #666;
+        }
+        .stats {
+            background: #1B9E4B;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .type-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #2563eb;
+            color: white;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🏡 Mock Data Test - GharBazaar</h1>
+    
+    <div class="stats">
+        <h2>Total Properties: <span id="total">0</span></h2>
+        <p>Home/House: <span id="home-count">0</span></p>
+        <p>PG/Hostel: <span id="pg-count">0</span></p>
+        <p>Residential: <span id="residential-count">0</span></p>
+        <p>Commercial: <span id="commercial-count">0</span></p>
+        <p>Plot/Land: <span id="plot-count">0</span></p>
+    </div>
+
+    <div id="properties"></div>
+
+    <script type="module">
+        // Import mock data
+        import { mockProperties, getTopRatedProperties, filterProperties } from './src/data/mockProperties.js';
+
+        console.log('Mock Properties:', mockProperties);
+        console.log('Total:', mockProperties.length);
+
+        // Count by type
+        const counts = {
+            total: mockProperties.length,
+            home: mockProperties.filter(p => ['Home/House', 'Villa', 'Independent House'].includes(p.type)).length,
+            pg: mockProperties.filter(p => p.type.includes('PG') || p.type.includes('Hostel')).length,
+            residential: mockProperties.filter(p => p.type === 'residential').length,
+            commercial: mockProperties.filter(p => p.type === 'Commercial Space').length,
+            plot: mockProperties.filter(p => p.type === 'Plot/Land').length
+        };
+
+        // Update stats
+        document.getElementById('total').textContent = counts.total;
+        document.getElementById('home-count').textContent = counts.home;
+        document.getElementById('pg-count').textContent = counts.pg;
+        document.getElementById('residential-count').textContent = counts.residential;
+        document.getElementById('commercial-count').textContent = counts.commercial;
+        document.getElementById('plot-count').textContent = counts.plot;
+
+        // Display properties
+        const container = document.getElementById('properties');
+        
+        // Group by type
+        const byType = mockProperties.reduce((acc, prop) => {
+            if (!acc[prop.type]) acc[prop.type] = [];
+            acc[prop.type].push(prop);
+            return acc;
+        }, {});
+
+        Object.entries(byType).forEach(([type, props]) => {
+            const section = document.createElement('div');
+            section.innerHTML = `<h2>${type} (${props.length})</h2>`;
+            
+            props.forEach(prop => {
+                const div = document.createElement('div');
+                div.className = 'property';
+                div.innerHTML = `
+                    <h3>${prop.title}</h3>
+                    <span class="type-badge">${prop.type}</span>
+                    <p><strong>Price:</strong> ₹${prop.price.toLocaleString('en-IN')}/month</p>
+                    <p><strong>Location:</strong> ${prop.location}, ${prop.city}</p>
+                    <p><strong>Bedrooms:</strong> ${prop.bedrooms} | <strong>Bathrooms:</strong> ${prop.bathrooms}</p>
+                    <p><strong>Views:</strong> ${prop.views}</p>
+                `;
+                section.appendChild(div);
+            });
+            
+            container.appendChild(section);
+        });
+    </script>
+</body>
+</html>
