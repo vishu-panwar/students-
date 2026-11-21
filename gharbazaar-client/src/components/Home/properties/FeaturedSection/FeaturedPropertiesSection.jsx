@@ -15,14 +15,15 @@ import FeaturedCardSkeleton from "./FeaturedCardSkeleton.jsx";
 const FeaturedPropertiesSection = () => {
   const navigate = useNavigate();
 
-  // Mock boosted/featured properties data
+  // Mock boosted/featured properties data - Mix of SALE and RENT
   const mockFeaturedProperties = [
     {
       _id: "featured-001",
       title: "Premium 4BHK Sea View Penthouse",
       location: "Marine Drive, Mumbai",
       price: 8500000,
-      listingType: "Sale",
+      listingType: "sale",
+      propertyType: "Penthouse",
       images: ["https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800"],
       status: "Available",
       views: 2341,
@@ -32,8 +33,9 @@ const FeaturedPropertiesSection = () => {
       _id: "featured-002",
       title: "Luxury Villa with Private Pool",
       location: "Whitefield, Bangalore",
-      price: 125000,
-      listingType: "Rent",
+      price: 12500000,
+      listingType: "sale",
+      propertyType: "Villa",
       images: ["https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800"],
       status: "Available",
       views: 1876,
@@ -44,7 +46,8 @@ const FeaturedPropertiesSection = () => {
       title: "Modern 3BHK in Prime Location",
       location: "Cyber City, Gurgaon",
       price: 65000,
-      listingType: "Rent",
+      listingType: "rent",
+      propertyType: "Apartment",
       images: ["https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800"],
       status: "Available",
       views: 1523,
@@ -54,8 +57,9 @@ const FeaturedPropertiesSection = () => {
       _id: "featured-004",
       title: "Spacious Independent House",
       location: "Koramangala, Bangalore",
-      price: 4500000,
-      listingType: "Sale",
+      price: 6500000,
+      listingType: "sale",
+      propertyType: "House",
       images: ["https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800"],
       status: "Available",
       views: 1298,
@@ -66,7 +70,8 @@ const FeaturedPropertiesSection = () => {
       title: "Elegant 2BHK Apartment",
       location: "Andheri West, Mumbai",
       price: 45000,
-      listingType: "Rent",
+      listingType: "rent",
+      propertyType: "Apartment",
       images: ["https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800"],
       status: "Available",
       views: 987,

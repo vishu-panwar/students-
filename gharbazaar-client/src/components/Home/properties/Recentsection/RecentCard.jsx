@@ -20,10 +20,20 @@ const RecentCard = ({ property }) => {
 
   const user = JSON.parse(localStorage.getItem("user") || "null");
 
-  const { _id, title, price, location, images, status, views } = property || {};
+  const { _id, title, price, location, images, status, views, propertyType, listingType } = property || {};
   const isFavorite = bookmarks?.some(
     (item) => String(item?._id) === String(property?._id),
   );
+
+  // Determine if property is for rent or sale
+  // Check listingType first, then propertyType, then price range as fallback
+  const isForRent = 
+    listingType?.toLowerCase().includes('rent') || 
+    propertyType?.toLowerCase().includes('rent') ||
+    propertyType?.toLowerCase().includes('pg') ||
+    propertyType?.toLowerCase().includes('hostel') ||
+    propertyType?.toLowerCase().includes('co-living') ||
+    (price && price < 100000); // Fallback: if price < 1 lakh, likely rent
 
   const handleBookmark = async (e) => {
     e.stopPropagation();
@@ -47,7 +57,14 @@ const RecentCard = ({ property }) => {
     }
   };
 
-  const handleNavigate = () => navigate(`/property/${_id}`);
+  // Navigate to appropriate detail page based on listing type
+  const handleNavigate = () => {
+    if (isForRent) {
+      navigate(`/property-rent/${_id}`);
+    } else {
+      navigate(`/property-sale/${_id}`);
+    }
+  };
 
   const statusText = status || "Available";
   const isAvailable = statusText.toLowerCase().includes("available");
@@ -79,6 +96,17 @@ const RecentCard = ({ property }) => {
           </span>
           <span className="font-semibold text-[11px] tracking-wide px-2.5 py-1 bg-[#2563eb] text-white">
             Verified
+          </span>
+        </div>
+
+        {/* Listing Type Badge — top right below heart */}
+        <div className="absolute top-12 right-2.5">
+          <span className={`font-bold text-[10px] tracking-wide px-2 py-1 rounded shadow-md ${
+            isForRent 
+              ? "bg-purple-600 text-white" 
+              : "bg-amber-500 text-white"
+          }`}>
+            {isForRent ? "FOR RENT" : "FOR SALE"}
           </span>
         </div>
 
@@ -130,11 +158,13 @@ const RecentCard = ({ property }) => {
               {price
                 ? price >= 10000000
                   ? `${(price / 10000000).toFixed(1)} Cr`
-                  : price.toLocaleString("en-IN")
+                  : price >= 100000
+                    ? `${(price / 100000).toFixed(1)} L`
+                    : price.toLocaleString("en-IN")
                 : "3,500"}
             </span>
             <span className="text-[11px] text-[#1b9e4b] font-medium ml-0.5">
-              /month
+              {isForRent ? "/month" : ""}
             </span>
           </div>
 

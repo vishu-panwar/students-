@@ -103,7 +103,7 @@ export default function MarketplaceProductCard({ product }) {
               Buy
             </button>
             <button
-              onClick={(e) => e.stopPropagation()}
+              onClick={(e) => { e.stopPropagation(); navigate(`/product/${product?.id || 1}`); }}
               className="bg-[#1B9E4B] hover:bg-[#147638] active:scale-95 text-white text-[10px] font-bold py-1.5 transition-colors"
             >
               Details →

@@ -279,7 +279,6 @@ export default function Navbar() {
             <nav className="hidden lg:flex items-center gap-6">
               {NAV_LINKS.map(({ label, path, hasDropdown, dropdown }) => {
                 const isActive = location.pathname === path || (label === "Services" && location.pathname.startsWith("/services"));
-                const isAbout = label === "About";
                 const isServices = label === "Services";
                 const isPricing = label === "Pricing";
 
@@ -413,8 +412,7 @@ export default function Navbar() {
                 return (
                   <Link
                     key={label}
-                    to={isAbout ? "#" : path}
-                    onClick={isAbout ? (e) => handleAboutClick(e, false) : undefined}
+                    to={path}
                     className={`relative text-[15px] font-medium transition-colors ${
                       isActive
                         ? "text-black"
@@ -633,7 +631,6 @@ export default function Navbar() {
 
             {/* Nav links */}
             {NAV_LINKS.map(({ label, path, icon: Icon, hasDropdown, dropdown }) => {
-              const isAbout = label === "About";
               
               if (hasDropdown) {
                 const isMegaMenu = NAV_LINKS.find(l => l.label === label)?.megaMenu;
@@ -703,8 +700,8 @@ export default function Navbar() {
               return (
                 <Link
                   key={label}
-                  to={isAbout ? "#" : path}
-                  onClick={isAbout ? (e) => handleAboutClick(e, true) : () => setMobileOpen(false)}
+                  to={path}
+                  onClick={() => setMobileOpen(false)}
                   className="flex items-center gap-4 px-5 py-[15px] border-b border-[#d5cfc5] text-[#0A0A0A] hover:bg-black/5 transition-colors"
                 >
                   <Icon size={20} className="text-[#0A0A0A] shrink-0" strokeWidth={1.8} />

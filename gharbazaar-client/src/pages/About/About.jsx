@@ -1,0 +1,486 @@
+import React from 'react';
+import { Helmet } from 'react-helmet-async';
+import { useNavigate } from 'react-router-dom';
+import {
+  Building2, Users, MapPin, Shield, Scale, Handshake, Heart,
+  TrendingUp, Award, CheckCircle2, ArrowRight, Target, Eye, Zap
+} from 'lucide-react';
+
+const STATS = [
+  { value: "10,000+", label: "Listed Properties", desc: "Verified properties across India" },
+  { value: "50,000+", label: "Real Estate Agents", desc: "Trusted agents on platform" },
+  { value: "500+", label: "Verified Vendors", desc: "Quality building materials" },
+  { value: "80+", label: "Cities (Pan-India)", desc: "Presence across India" },
+];
+
+const MISSION_VISION_VALUES = [
+  {
+    icon: <Target size={32} className="text-white" />,
+    title: "Our Mission",
+    desc: "To create a transparent and technology-driven platform that empowers Indian property seekers, real estate professionals, and construction ecosystem.",
+    bgColor: "bg-[#1B4332]"
+  },
+  {
+    icon: <Eye size={32} className="text-white" />,
+    title: "Our Vision",
+    desc: "To bring India's real estate and construction ecosystem online, and make every piece of property information accessible and reliable.",
+    bgColor: "bg-[#2d6a4f]"
+  },
+  {
+    icon: <Heart size={32} className="text-white" />,
+    title: "Our Values",
+    desc: "Trust & Transparency\nCustomer First\nIntegrity & Excellence\nInnovation & Growth\nInclusive Growth",
+    bgColor: "bg-[#1B9E4B]"
+  },
+];
+
+const JOURNEY = [
+  { icon: "🎯", year: "Ideation", title: "Identifying the Gap", desc: "Recognized the need for a transparent real estate platform in India" },
+  { icon: "🚀", year: "Foundation", title: "Platform Launch", desc: "GharBazaar platform launched with 1000+ properties" },
+  { icon: "📈", year: "Expansion", title: "Rapid Growth", desc: "Expanded to 80+ cities with 50,000+ agents" },
+  { icon: "🏆", year: "Growth & Beyond", title: "Market Leadership", desc: "Became one of India's leading PropTech platforms" },
+];
+
+const VERTICALS = [
+  {
+    icon: <Building2 size={40} className="text-white" />,
+    title: "Properties",
+    desc: "Buy, Sell, or Lease properties with verified listings. Get expert support and advice end-to-end.",
+    features: ["Verified Listings", "Expert Guidance", "End-to-end Support"],
+    bgColor: "bg-[#1B4332]"
+  },
+  {
+    icon: <Shield size={40} className="text-white" />,
+    title: "Products",
+    desc: "Premium construction and building materials, delivered fast and sourced from trusted vendors and manufacturers.",
+    features: ["Quality Materials", "Fast Delivery", "Trusted Vendors"],
+    bgColor: "bg-[#2d6a4f]"
+  },
+  {
+    icon: <Users size={40} className="text-white" />,
+    title: "Services",
+    desc: "Expert property services including inspections, legal assistance, digital marketing, and more.",
+    features: ["Property Inspection", "Legal Services", "Digital Marketing"],
+    bgColor: "bg-[#1B9E4B]"
+  },
+];
+
+const WHY_CHOOSE = [
+  {
+    icon: <Shield size={24} className="text-[#1B9E4B]" />,
+    title: "Trust",
+    desc: "Built on trust, we are a transparent real estate ecosystem",
+  },
+  {
+    icon: <CheckCircle2 size={24} className="text-[#1B9E4B]" />,
+    title: "Tech-Led & Data",
+    desc: "AI-powered recommendations and data-driven insights",
+  },
+  {
+    icon: <Zap size={24} className="text-[#1B9E4B]" />,
+    title: "Zero Fraud",
+    desc: "100% verified listings with zero tolerance for fraud",
+  },
+  {
+    icon: <Users size={24} className="text-[#1B9E4B]" />,
+    title: "Wide Partner Base",
+    desc: "50,000+ agents and 500+ vendors on our platform",
+  },
+];
+
+const PARTNERSHIPS = [
+  {
+    icon: <Users size={32} className="text-[#1B9E4B]" />,
+    title: "Ground Partners",
+    desc: "50,000+ real estate agents, brokers, and property consultants",
+  },
+  {
+    icon: <Scale size={32} className="text-[#1B9E4B]" />,
+    title: "Legal Partners",
+    desc: "Verified legal professionals for documentation and compliance",
+  },
+  {
+    icon: <Award size={32} className="text-[#1B9E4B]" />,
+    title: "Premium Partners",
+    desc: "Top-tier developers, builders, and construction companies",
+  },
+  {
+    icon: <Heart size={32} className="text-[#1B9E4B]" />,
+    title: "Strategic Partners",
+    desc: "Banks, insurance, and financial institutions",
+  },
+];
+
+const RECOGNITIONS = [
+  { logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Emblem_of_India.svg/150px-Emblem_of_India.svg.png", name: "Startup India", desc: "DPIIT Recognized" },
+  { logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Emblem_of_India.svg/150px-Emblem_of_India.svg.png", name: "Digital India", desc: "Innovation Award 2024" },
+  { logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Emblem_of_India.svg/150px-Emblem_of_India.svg.png", name: "Make in India", desc: "Certified Partner" },
+  { logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Emblem_of_India.svg/150px-Emblem_of_India.svg.png", name: "MSME", desc: "Supporting MSMEs" },
+];
+
+export default function About() {
+  const navigate = useNavigate();
+
+  return (
+    <div className="bg-[#EDE8DF] min-h-screen" style={{ fontFamily: "'Poppins','Plus Jakarta Sans',sans-serif" }}>
+      
+      <Helmet>
+        <title>About GharBazaar | Building India's Trusted Real Estate Ecosystem</title>
+        <meta name="description" content="Learn about GharBazaar - India's leading PropTech platform connecting property seekers with verified listings, agents, and construction materials." />
+      </Helmet>
+
+      {/* HERO SECTION */}
+      <section className="relative bg-gradient-to-br from-[#1B4332] via-[#2d6a4f] to-[#1B4332] px-4 sm:px-8 md:px-14 py-16 sm:py-20 overflow-hidden">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Left Content */}
+            <div>
+              <span className="inline-block bg-white/10 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-full mb-6 border border-white/20">
+                🏆 Government Recognized Platform
+              </span>
+              
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white leading-tight mb-6">
+                Building a More Transparent & Trusted<br />
+                <span className="text-[#95d5b2]">Real Estate Ecosystem</span><br />
+                for Bharat
+              </h1>
+              
+              <p className="text-white/80 text-base leading-relaxed mb-8 max-w-xl">
+                GharBazaar is a digital platform that enables the real estate and building construction industry to do business in a more transparent, easy, cost-effective, trustworthy, and efficient way by leveraging the power of technology, AI & ML.
+              </p>
+
+              <div className="flex flex-wrap gap-4">
+                <button 
+                  onClick={() => navigate('/contact')}
+                  className="bg-white hover:bg-gray-100 text-[#1B4332] font-bold px-6 py-3 rounded-lg transition-all duration-300 text-sm flex items-center gap-2 shadow-lg">
+                  Get Started
+                  <ArrowRight size={18} />
+                </button>
+                <button 
+                  onClick={() => navigate('/services')}
+                  className="bg-transparent hover:bg-white/10 text-white border-2 border-white font-bold px-6 py-3 rounded-lg transition-all duration-300 text-sm">
+                  Our Services
+                </button>
+              </div>
+            </div>
+
+            {/* Right Image */}
+            <div className="relative">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+                <img 
+                  src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80" 
+                  alt="Modern House"
+                  className="w-full h-[400px] object-cover"
+                />
+                {/* Overlay Badge */}
+                <div className="absolute top-6 right-6 bg-white/95 backdrop-blur-sm rounded-xl p-4 shadow-xl">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-[#1B9E4B] rounded-full flex items-center justify-center">
+                      <Building2 size={24} className="text-white" />
+                    </div>
+                    <div>
+                      <p className="text-2xl font-black text-gray-900">Trust</p>
+                      <p className="text-xs text-gray-600">Certified Platform</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* STATS */}
+      <section className="px-4 sm:px-8 md:px-14 py-12 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+            {STATS.map(({ value, label, desc }) => (
+              <div key={label} className="text-center">
+                <div className="w-16 h-16 bg-[#1B9E4B]/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <Building2 size={28} className="text-[#1B9E4B]" />
+                </div>
+                <p className="text-3xl font-black text-gray-900 mb-1">{value}</p>
+                <p className="text-sm font-bold text-gray-700">{label}</p>
+                <p className="text-xs text-gray-500 mt-1">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* OUR STORY */}
+      <section className="px-4 sm:px-8 md:px-14 py-16 sm:py-20">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Left */}
+            <div>
+              <span className="inline-block bg-[#1B9E4B]/10 text-[#1B9E4B] text-xs font-bold px-3 py-1 rounded-full mb-4">
+                OUR STORY
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">
+                The Idea Behind<br />GharBazaar
+              </h2>
+              <p className="text-gray-600 leading-relaxed mb-4">
+                GharBazaar was founded with a vision to revolutionize India's real estate and construction industry. We recognized the challenges faced by property seekers, agents, and vendors - lack of transparency, information asymmetry, and inefficient processes.
+              </p>
+              <p className="text-gray-600 leading-relaxed mb-6">
+                Today, GharBazaar stands as a comprehensive ecosystem connecting millions of Indians with their dream properties, trusted agents, quality construction materials, and expert services - all powered by technology and driven by trust.
+              </p>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-white rounded-xl shadow-md p-5 border border-gray-100">
+                  <CheckCircle2 size={32} className="text-[#1B9E4B] mb-3" />
+                  <p className="text-2xl font-black text-gray-900">100%</p>
+                  <p className="text-sm text-gray-600">Verified Listings</p>
+                </div>
+                <div className="bg-white rounded-xl shadow-md p-5 border border-gray-100">
+                  <Shield size={32} className="text-blue-600 mb-3" />
+                  <p className="text-2xl font-black text-gray-900">Zero</p>
+                  <p className="text-sm text-gray-600">Hidden Charges</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Image */}
+            <div className="relative">
+              <div className="relative rounded-2xl overflow-hidden shadow-xl">
+                <img 
+                  src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80" 
+                  alt="City View"
+                  className="w-full h-[400px] object-cover"
+                />
+                {/* Overlay Card */}
+                <div className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-sm rounded-xl p-4 shadow-xl">
+                  <div className="flex items-center gap-3">
+                    <MapPin size={24} className="text-[#1B9E4B]" />
+                    <div>
+                      <p className="text-sm font-bold text-gray-900">Pan India Presence</p>
+                      <p className="text-xs text-gray-600">80+ Cities & Growing</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* MISSION VISION VALUES */}
+      <section className="px-4 sm:px-8 md:px-14 py-16 sm:py-20 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {MISSION_VISION_VALUES.map(({ icon, title, desc, bgColor }) => (
+              <div key={title} className={`${bgColor} rounded-xl p-8 text-white`}>
+                <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center mb-6">
+                  {icon}
+                </div>
+                <h3 className="text-xl font-bold mb-4">{title}</h3>
+                <p className="text-sm text-white/90 leading-relaxed whitespace-pre-line">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* JOURNEY */}
+      <section className="px-4 sm:px-8 md:px-14 py-16 sm:py-20">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <span className="inline-block bg-[#1B9E4B]/10 text-[#1B9E4B] text-xs font-bold px-3 py-1 rounded-full mb-4">
+              OUR JOURNEY
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">
+              From an Idea to a Growing Ecosystem
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {JOURNEY.map(({ icon, year, title, desc }, idx) => (
+              <div key={year} className="text-center">
+                <div className="w-20 h-20 bg-[#1B9E4B] rounded-full flex items-center justify-center mx-auto mb-4 text-4xl shadow-lg">
+                  {icon}
+                </div>
+                <p className="text-sm font-bold text-[#1B9E4B] mb-2">{year}</p>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">{title}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* BUSINESS VERTICALS */}
+      <section className="px-4 sm:px-8 md:px-14 py-16 sm:py-20 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <span className="inline-block bg-[#1B9E4B]/10 text-[#1B9E4B] text-xs font-bold px-3 py-1 rounded-full mb-4">
+              BUSINESS VERTICALS
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">
+              A Complete Real Estate & Construction Ecosystem
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {VERTICALS.map(({ icon, title, desc, features, bgColor }) => (
+              <div key={title} className="bg-white border-2 border-gray-200 rounded-xl p-8 hover:shadow-xl transition-all duration-300">
+                <div className={`w-20 h-20 ${bgColor} rounded-xl flex items-center justify-center mb-6 shadow-lg`}>
+                  {icon}
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">{title}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed mb-6">{desc}</p>
+                
+                <div className="space-y-2">
+                  {features.map((feature) => (
+                    <div key={feature} className="flex items-center gap-2">
+                      <CheckCircle2 size={16} className="text-[#1B9E4B] shrink-0" />
+                      <span className="text-xs text-gray-700">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <button className="mt-6 w-full bg-[#1B9E4B] hover:bg-[#147638] text-white font-bold py-2.5 rounded-lg transition-all duration-300 text-sm flex items-center justify-center gap-2">
+                  Learn More
+                  <ArrowRight size={16} />
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* WHY CHOOSE */}
+      <section className="px-4 sm:px-8 md:px-14 py-16 sm:py-20">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">
+              Why Choose GharBazaar?
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Built on trust, we are a transparent real estate and property ecosystem
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {WHY_CHOOSE.map(({ icon, title, desc }) => (
+              <div key={title} className="bg-white rounded-xl p-6 border border-gray-200 text-center hover:shadow-lg transition-all duration-300">
+                <div className="w-14 h-14 bg-[#1B9E4B]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  {icon}
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">{title}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* GOVERNMENT RECOGNITION */}
+      <section className="px-4 sm:px-8 md:px-14 py-16 sm:py-20 bg-gradient-to-br from-blue-50 to-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <span className="inline-block bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full mb-4">
+              🏆 GOVERNMENT RECOGNITION
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">
+              Recognized by Government of India
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {RECOGNITIONS.map(({ logo, name, desc }) => (
+              <div key={name} className="bg-white rounded-xl p-6 border-2 border-blue-100 text-center hover:shadow-xl transition-all duration-300">
+                <div className="w-20 h-20 mx-auto mb-4 bg-blue-50 rounded-full flex items-center justify-center">
+                  <img src={logo} alt={name} className="w-12 h-12 object-contain" />
+                </div>
+                <p className="text-sm font-bold text-gray-900 mb-1">{name}</p>
+                <p className="text-xs text-gray-600">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* IMAGE BANNER */}
+      <section className="px-4 sm:px-8 md:px-14 py-16 sm:py-20 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+            <img 
+              src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80" 
+              alt="GharBazaar Office"
+              className="w-full h-[400px] object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#1B4332]/90 to-transparent flex items-center">
+              <div className="px-8 sm:px-12 max-w-2xl">
+                <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">
+                  Driven by People,<br />Powered by Purpose
+                </h2>
+                <p className="text-white/90 leading-relaxed mb-6">
+                  At GharBazaar, we believe in the power of technology to transform the way India buys, sells, and builds homes. Join us in our mission to make real estate accessible and transparent for everyone.
+                </p>
+                <button 
+                  onClick={() => navigate('/contact')}
+                  className="bg-white hover:bg-gray-100 text-[#1B4332] font-bold px-6 py-3 rounded-lg transition-all duration-300 text-sm inline-flex items-center gap-2">
+                  Join Our Mission
+                  <ArrowRight size={18} />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* KEY PARTNERSHIPS */}
+      <section className="px-4 sm:px-8 md:px-14 py-16 sm:py-20">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <span className="inline-block bg-purple-50 text-purple-700 text-xs font-bold px-3 py-1 rounded-full mb-4">
+              OUR KEY PARTNERSHIPS
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">
+              Building Together with Our Partners
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {PARTNERSHIPS.map(({ icon, title, desc }) => (
+              <div key={title} className="bg-white rounded-xl p-6 border border-gray-200 hover:shadow-lg transition-all duration-300">
+                <div className="w-16 h-16 bg-[#1B9E4B]/10 rounded-xl flex items-center justify-center mb-4">
+                  {icon}
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">{title}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA SECTION */}
+      <section className="px-4 sm:px-8 md:px-14 py-16 sm:py-20 bg-gradient-to-br from-[#1B4332] via-[#2d6a4f] to-[#1B4332]">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">
+            Be a Part of Our Mission
+          </h2>
+          <p className="text-white/90 text-base leading-relaxed mb-8 max-w-2xl mx-auto">
+            Join thousands of property seekers, agents, and vendors who trust GharBazaar for transparent, efficient, and reliable real estate transactions.
+          </p>
+          
+          <div className="flex flex-wrap gap-4 justify-center">
+            <button 
+              onClick={() => navigate('/register')}
+              className="bg-white hover:bg-gray-100 text-[#1B4332] font-bold px-8 py-3 rounded-lg transition-all duration-300 text-sm">
+              List Property
+            </button>
+            <button 
+              onClick={() => navigate('/promoter-partner')}
+              className="bg-transparent hover:bg-white/10 text-white border-2 border-white font-bold px-8 py-3 rounded-lg transition-all duration-300 text-sm">
+              Partner With Us
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  );
+}

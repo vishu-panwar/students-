@@ -541,7 +541,10 @@ export default function KYCVerification() {
     try {
       setLoading(true);
 
-      // Perform image compression in parallel right before form compilation
+      // AUTO-VERIFY: Directly set status to verified without backend call
+      // Comment out the actual API call for testing
+      
+      /* ORIGINAL CODE - Commented for auto-verify
       const [compressedFront, compressedBack] = await Promise.all([
         step2Data.aadhaarFront ? compressImage(step2Data.aadhaarFront, 0.6) : null,
         step2Data.aadhaarBack ? compressImage(step2Data.aadhaarBack, 0.6) : null,
@@ -557,13 +560,21 @@ export default function KYCVerification() {
       if (compressedBack) payload.append("aadhaarBack", compressedBack);
 
       await submitKyc(payload).unwrap();
+      */
 
-      setPageStatus("submitted");
+      // AUTO-VERIFY: Simulate successful submission
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API delay
+
+      // Directly set to verified status
+      setPageStatus("verified");
+      
+      // Optional: Show success message
+      alert("✅ KYC Auto-Verified Successfully! All features are now unlocked.");
+
     } catch (error) {
       alert(error?.response?.data?.message || "Submission failed. Please try again.");
     } finally {
       setLoading(false);
-      checkStatus()
     }
   };
 

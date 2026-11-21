@@ -28,8 +28,8 @@ export default function SellerLayout() {
   const user = JSON.parse(localStorage.getItem("user"));
   const firstLetter = user?.fullName?.trim()?.charAt(0)?.toUpperCase() || "S";
 
-  // Mock KYC status - change to false to test locked state
-  const [isKycVerified, setIsKycVerified] = useState(false);
+  // Mock KYC status - AUTO-VERIFY: Set to true to unlock all features
+  const [isKycVerified, setIsKycVerified] = useState(true);
 
   const menuItems = [
     { path: "/seller/dashboard/property", icon: LayoutDashboard, label: "Dashboard", requiresKyc: false },

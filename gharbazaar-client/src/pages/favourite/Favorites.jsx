@@ -240,12 +240,29 @@ function FavoriteCard({ item, onRemove, onWhatsApp }) {
     images,
     status,
     views,
+    propertyType,
+    listingType,
   } = item || {};
 
   const statusText = status || "Available";
   const isAvailable = statusText.toLowerCase().includes("available");
 
-  const handleNavigate = () => navigate(`/property/${_id}`);
+  // Determine if property is for rent or sale
+  const isForRent = 
+    listingType?.toLowerCase().includes('rent') || 
+    propertyType?.toLowerCase().includes('rent') ||
+    propertyType?.toLowerCase().includes('pg') ||
+    propertyType?.toLowerCase().includes('hostel') ||
+    propertyType?.toLowerCase().includes('co-living') ||
+    (price && price < 100000);
+
+  const handleNavigate = () => {
+    if (isForRent) {
+      navigate(`/property-rent/${_id}`);
+    } else {
+      navigate(`/property-sale/${_id}`);
+    }
+  };
 
   const handleRemove = async (e) => {
     e.stopPropagation();
@@ -286,6 +303,17 @@ function FavoriteCard({ item, onRemove, onWhatsApp }) {
         >
           {isAvailable ? "Available" : statusText}
         </span>
+
+        {/* Listing Type Badge — below status badge */}
+        <div className="absolute top-12 left-2.5">
+          <span className={`font-bold text-[10px] tracking-wide px-2 py-1 rounded shadow-md ${
+            isForRent 
+              ? "bg-purple-600 text-white" 
+              : "bg-amber-500 text-white"
+          }`}>
+            {isForRent ? "FOR RENT" : "FOR SALE"}
+          </span>
+        </div>
 
         {/* Remove button — top right, same position/size as RecentCard heart */}
         <button
@@ -340,11 +368,13 @@ function FavoriteCard({ item, onRemove, onWhatsApp }) {
               {price
                 ? price >= 10000000
                   ? `${(price / 10000000).toFixed(1)} Cr`
-                  : price.toLocaleString("en-IN")
+                  : price >= 100000
+                    ? `${(price / 100000).toFixed(1)} L`
+                    : price.toLocaleString("en-IN")
                 : "N/A"}
             </span>
             <span className="text-[11px] text-[#1b9e4b] font-medium ml-0.5">
-              /month
+              {isForRent ? "/month" : ""}
             </span>
           </div>
 

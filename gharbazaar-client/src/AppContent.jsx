@@ -21,8 +21,10 @@ const ScrollToTop = lazy(() => import("./components/common/ScrollToTop"));
 
 /* ───────── MAIN PAGES ───────── */
 const Home                   = lazy(() => import("./pages/Home/Home"));
+const About                  = lazy(() => import("./pages/About/About"));
 const Services               = lazy(() => import("./pages/Services"));
 const Marketplace            = lazy(() => import("./pages/Marketplace"));
+const ProductDetails         = lazy(() => import("./pages/MarketPlace/ProductDetails"));
 const Pricing                = lazy(() => import("./pages/Pricing"));
 const Contact                = lazy(() => import("./pages/contact/Contact"));
 const Cart                   = lazy(() => import("./pages/Cart"));
@@ -35,6 +37,8 @@ const ForgotPassword         = lazy(() => import("./pages/authenticate/ForgotPas
 const ResetPassword          = lazy(() => import("./pages/authenticate/ResetPassword"));
 const Favorites              = lazy(() => import("./pages/favourite/Favorites"));
 const PropertyDetails        = lazy(() => import("./pages/properties/PropertyDetails"));
+const PropertyDetailsSale    = lazy(() => import("./pages/properties/PropertyDetailsSale"));
+const PropertyDetailsRent    = lazy(() => import("./pages/properties/PropertyDetailsRent"));
 const BookingPage            = lazy(() => import("./pages/properties/BookingPage"));
 const BookingStep2           = lazy(() => import("./pages/properties/BookingStep2"));
 const BookingStep3           = lazy(() => import("./pages/properties/BookingStep3"));
@@ -195,13 +199,17 @@ export default function AppContent() {
           <Route path="/reset-password"          element={<ResetPassword />} />
           <Route path="/categoryProperty"        element={<CategoriesPage />} />
           <Route path="/property/:id"            element={<PropertyDetails />} />
+          <Route path="/property-sale/:id"       element={<PropertyDetailsSale />} />
+          <Route path="/property-rent/:id"       element={<PropertyDetailsRent />} />
           <Route path="/booking/:id"             element={<BookingPage />} />
           <Route path="/booking-step2/:id"       element={<BookingStep2 />} />
           <Route path="/booking-step3/:id"       element={<BookingStep3 />} />
           <Route path="/booking-confirmation/:id" element={<BookingConfirmation />} />
           <Route path="/favorites"               element={<Favorites />} />
+          <Route path="/about"                   element={<About />} />
           <Route path="/services"                element={<Services />} />
           <Route path="/marketplace"             element={<Marketplace />} />
+          <Route path="/product/:id"             element={<ProductDetails />} />
           <Route path="/pricing"                 element={<Pricing />} />
           <Route path="/contact"                 element={<Contact />} />
           <Route path="/cart"                    element={<Cart />} />

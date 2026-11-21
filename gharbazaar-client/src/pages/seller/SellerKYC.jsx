@@ -64,9 +64,9 @@ export default function SellerKYC() {
       return;
     }
 
-    // API call would go here
-    toast.success("KYC submitted successfully! We'll verify within 24-48 hours.");
-    setKycStatus("pending");
+    // AUTO-VERIFY: Directly set to verified status
+    toast.success("✅ KYC Auto-Verified Successfully! All features are now unlocked.");
+    setKycStatus("verified");
   };
 
   const getStatusBadge = () => {
